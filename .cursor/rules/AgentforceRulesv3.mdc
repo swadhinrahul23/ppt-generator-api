@@ -1,0 +1,373 @@
+# Agentforce Agent Configuration Rules v3
+
+## 1. Agent Configuration Structure
+An Agentforce configuration file must adhere to the following markdown structure.
+
+```markdown
+# Agentforce Agent Configuration for [SPECIFIC PURPOSE]
+
+## Agent Name
+**[AGENT NAME]**
+
+## Agent Description
+[CONCISE DESCRIPTION OF AGENT'S PURPOSE AND CAPABILITIES]
+
+## Agent Role
+You are [DETAILED DESCRIPTION OF HOW THE AGENT ASSISTS USERS]
+
+## Company Description
+[BRIEF DESCRIPTION OF THE COMPANY AND ITS RELEVANT CONTEXT]
+
+## Topics
+[AT LEAST 1 TOPIC SECTION REQUIRED]
+
+## Actions
+[AT LEAST 1 ACTION SECTION REQUIRED]
+
+## Variables and Filters
+[OPTIONAL]
+```
+
+## 2. Agent Definition Rules
+
+### Agent Name
+- **Content:** Concise, descriptive, and specific.
+- **Format:** Proper noun, enclosed in double asterisks (`**Agent Name**`).
+
+### Agent Description, Role, and Company Description
+- **Description:** 1-2 clear sentences describing the agent's purpose, functions, and target users.
+- **Role:** Write in the second person ("You are..."). Describe domain expertise and primary tasks.
+- **Company:** Brief description of the organization and relevant industry context.
+- **Constraint:** All three sections have a **strict 255-character maximum limit**.
+
+---
+
+## 3. Topic Rules
+For each topic, include the following sections.
+
+```markdown
+### [TOPIC NUMBER]. [TOPIC NAME]
+
+**Classification Description:**
+[BRIEF DESCRIPTION OF WHAT THIS TOPIC HANDLES]
+
+**Scope:**
+[DESCRIPTION OF THE AGENT'S RESPONSIBILITIES FOR THIS TOPIC]
+
+**Instructions:**
+1. [NUMBERED INSTRUCTION]
+...
+
+**Filters:** (Optional)
+- [FILTER NAME]: [FILTER CONDITION]
+```
+
+### Topic Best Practices
+- **Quantity:** Limit to 10-15 topics per agent for optimal performance.
+- **Naming:** Use 2-3 specific, customer-recognizable words (e.g., "Account Management," not "Customer Info").
+- **Classification:** Write 1-2 sentences listing specific scenarios and keywords this topic handles. Make it distinct from other topics.
+  - **Good Example:** "Answer questions about order status, shipping, delivery times, and tracking. Help with finding order details, changing or canceling orders, and addressing order-related concerns."
+  - **Bad Example:** "Handle order questions"
+- **Scope:** Clearly define what the agent **can** and **cannot** do within this topic. Write as a job description ("Your job is to...").
+  - **Good Example:** "Your job is only to help customers who cannot login with resetting their password or looking up their username. You cannot update account information or modify permissions."
+  - **Bad Example:** "Help with login problems"
+- **Instructions:**
+    - Provide 5-10 numbered, single, actionable steps.
+    - Reference specific Actions by their exact name.
+    - If sequence is important, state it explicitly (e.g., "Step 1:...", "Step 2:...").
+    - Avoid topic switching unless absolutely necessary.
+    - Instructions must be clear enough for the Atlas Reasoning Engine to follow.
+    - Include handling for typical and edge cases.
+
+### Topic Switching Guidelines
+- **CRITICAL:** Avoid topic switching in topic instructions unless absolutely necessary. The Atlas Reasoning Engine relies on user utterances that match a topic's classification description to identify the correct topic.
+- **Why Topic Switching Fails:** Atlas cannot switch topics unless there is a specific user utterance that connects with the target topic's classification description. Internal topic switching without user context often fails.
+- **Best Practice:** Design each topic to handle its complete user journey independently. If users need different functionality, they should naturally express it in their conversation.
+- **Exception:** Only use topic switching when there's a clear, unavoidable business requirement and you can guide the user to provide the necessary utterance that matches the target topic's classification.
+
+**Example of What NOT to Do:**
+```markdown
+## Topic Instructions
+Help the user with account management. If they need billing information, switch to the Billing topic.
+```
+
+**Example of What TO Do:**
+```markdown
+## Topic Instructions
+Help the user with account management including profile updates, password resets, and account settings. For billing-related questions, inform the user that billing assistance is available and ask them to specify their billing needs.
+```
+
+---
+
+## 5. Standard Actions Priority
+
+### Standard Actions Reference
+- **Reference File:** `SalesforceStandardActions.mdc` in `.cursor/rules/` directory
+- **Usage:** Always consult this reference before creating custom actions
+- **Process:** Search reference file for relevant actions by category or keyword
+
+### Standard Actions First Policy
+- **CRITICAL:** Always prioritize Salesforce standard actions over custom actions when available
+- **Process:** Before creating any custom action, search `@SalesforceStandardActions.mdc` for suitable existing actions
+- **Custom Actions:** Only create custom actions when no standard action meets the specific requirement
+
+### Standard Actions Categories Available
+- **Platform Actions:** Core Salesforce operations (Query Records, Update Record, Get Record Details, etc.)
+- **Industry-Specific Actions:** 
+  - Financial Services (Create Case to Block Card, Get Financial Account Balances)
+  - Healthcare (Get Patient Data from EMR, Register Patient in EMR)
+  - Automotive (Get Vehicles for Customer, Create Payment Deferral Case)
+  - Field Service (Create Appointment, Schedule Appointment, Cancel Appointment)
+  - Commerce (Add Order to Cart, Get Most Recent Orders)
+  - Communications (Get Account Balance, Create Billing Dispute Case)
+  - And 15+ other industry categories
+
+### Standard Actions Validation
+- **Documentation:** Each standard action includes purpose, parameters, and Salesforce documentation link
+- **Verification:** Always verify action capabilities against requirements before proposing custom alternatives
+- **Reference:** Use `@SalesforceStandardActions.mdc` to access complete actions reference
+
+---
+
+## 6. Action Rules
+
+### Action Selection Process
+1. **Step 1:** Search `@SalesforceStandardActions.mdc` for existing actions that match the requirement
+2. **Step 2:** If standard action exists, use it with appropriate configuration
+3. **Step 3:** Only if no standard action fits, design a custom Flow or Apex action
+4. **Step 4:** Document why standard actions were not suitable (if creating custom)
+
+### Standard vs Custom Action Decision Matrix
+**Use Standard Action When:**
+- Exact functionality match exists
+- Standard action covers 80%+ of requirements
+- Minor configuration can bridge gaps
+
+**Create Custom Action When:**
+- No standard action addresses the core requirement
+- Business logic is highly specific to organization
+- Standard action lacks critical parameters or outputs
+
+### Action Validation Checklist
+Before finalizing any action configuration, verify:
+- [ ] Searched `@SalesforceStandardActions.mdc` for existing solutions
+- [ ] Evaluated if standard action meets core requirements
+- [ ] Documented justification if choosing custom over standard
+- [ ] Confirmed standard action has necessary parameters and outputs
+- [ ] Reviewed Salesforce documentation for standard action limitations
+
+### Action Best Practices
+- **Naming:** Use descriptive, action-oriented names that clearly indicate what the action does
+- **Instructions:** Provide clear, step-by-step instructions for the action
+- **Parameters:** Define all required and optional inputs with clear descriptions
+- **Error Handling:** Include guidance for common error scenarios
+
+### Action Format Structure
+For each action, include the following sections:
+
+```markdown
+### [ACTION NUMBER]. [ACTION NAME]
+
+**Action Type:** [Standard Action | Flow | Apex]
+
+**Standard Action Reference:** (If using standard action)
+- **Standard Action Name:** [Name from SalesforceStandardActions.mdc]
+- **Purpose:** [Why this standard action was selected]
+- **Documentation:** [Link to Salesforce documentation]
+
+**Action Instructions:** [Clear description of what the action does and when to use it]
+
+**Input Requirements:**
+- **[Input Name]:** [Description and format requirements]
+- **[Input Name]:** [Description and format requirements]
+
+**Expected Output:** [Description of what the action returns]
+
+**Error Handling:** [How the action handles common error scenarios]
+```
+
+### Standard Action Integration Examples
+
+**Good Example - Using Standard Action:**
+```markdown
+### Action 1: Retrieve Customer Account Information
+
+**Action Type:** Standard Action
+
+**Standard Action Reference:**
+- **Standard Action Name:** Get Record Details
+- **Purpose:** Provides comprehensive account information including related records and activities
+- **Documentation:** https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_record_details.htm
+
+**Action Instructions:**
+Retrieve complete customer account details including contact information, recent activities, and related records to provide comprehensive customer support.
+
+**Inputs:**
+- Record ID (Required): Salesforce Account ID
+- Include Related Records (Optional): Boolean to include related contacts, opportunities, cases
+
+**Outputs:**
+- Account Details: Complete account record with all fields
+- Related Records: Associated contacts, opportunities, cases
+- Recent Activities: Recent tasks, events, and interactions
+```
+
+**Bad Example - Unnecessary Custom Action:**
+```markdown
+### Action 1: Get Customer Info
+
+**Action Type:** Flow
+
+**Action Instructions:**
+Create a custom flow to get customer account details
+
+**Why This is Bad:** Should use "Get Record Details" standard action instead
+```
+
+### Custom Action Justification Template
+When creating custom actions, always include:
+
+```markdown
+**Custom Action Justification:**
+- **Standard Actions Evaluated:** [List of standard actions considered]
+- **Why Standard Actions Don't Fit:** [Specific reasons why standard actions are insufficient]
+- **Custom Requirements:** [Specific business logic that requires custom implementation]
+```
+
+---
+
+## 8. Variables and Filters
+
+### Variables Overview
+Variables store information during agent conversations and enable sophisticated state management. They are essential for creating conditional logic and maintaining conversation context.
+
+#### Variable Types
+- **Context Variables**: Derived from messaging session (immutable during session)
+  - Standard/custom fields from MessagingSession object
+  - Pre-chat form data
+  - Previous session information
+- **Custom Variables**: Store action outputs and conversation state (mutable)
+  - Track authentication status
+  - Store action outputs for reuse
+  - Create dependencies between actions
+
+#### Variable Best Practices
+- **Naming**: Use descriptive names (e.g., `authenticationStatus`, `customerAccountId`)
+- **Purpose**: Each variable should have a clear, single purpose
+- **Scope**: Understand variable lifecycle (session vs. conversation)
+- **Data Types**: Currently support Text and Number types only
+
+#### Variable Naming Standards
+- Use camelCase: `customerAccountId`, `authenticationStatus`
+- Be descriptive: `orderNumber` not `orderNum`
+- Include data type context: `isAuthenticated` (boolean concept), `customerScore` (numeric)
+
+### Filters Overview
+Filters provide deterministic control over topic and action availability during reasoning. Unlike instructions, filters operate at the system level to completely remove or include topics and actions.
+
+#### When to Use Filters vs Instructions
+- **Use Filters For**: 
+  - Security controls (authentication requirements)
+  - Sequential workflow enforcement (Step A must complete before Step B)
+  - Data-driven availability (action only available if specific data exists)
+- **Use Instructions For**:
+  - Conversation flow guidance
+  - Response formatting
+  - Business context explanation
+
+#### Filter Performance Benefits
+- Filters operate deterministically (faster than LLM-based instructions)
+- Reduced semantic noise improves topic classification accuracy
+- Contextually appropriate action selection improves user experience
+- Variables should be used judiciously to avoid complexity
+
+#### Filter Implementation
+- **Topic-Level Filters**: Control entire topic availability
+  - Example: `authenticationStatus = "verified"` for Account Management topic
+- **Action-Level Filters**: Control specific action availability within a topic
+  - Example: `orderNumber != null` for Order Status actions
+
+#### Common Filter Patterns
+- **Authentication**: `authenticationStatus = "verified"`
+- **Data Dependency**: `recordId != null`
+- **User Type**: `userType = "premium"`
+- **Sequential Process**: `stepOneComplete = "true"`
+
+#### Filter Examples
+
+**Authentication Filter:**
+- **Condition**: `authenticationStatus = "verified"`
+- **Applied To**: Account Management Topic, Payment Processing Topic
+- **Purpose**: Prevent access to sensitive operations before authentication
+
+**Sequential Process Filter:**
+- **Condition**: `orderNumber != null`
+- **Applied To**: Check Order Status Action, Modify Order Action
+- **Purpose**: Ensure order lookup happens before order operations
+
+**Data Validation Filter:**
+- **Condition**: `customerAccountId != null`
+- **Applied To**: Account Update Actions
+- **Purpose**: Ensure customer identification before account modifications
+
+### Variable and Filter Integration
+- Variables enable filters to make intelligent decisions
+- Action outputs can populate variables for subsequent filter evaluation
+- Context variables provide session-level filtering capabilities
+- Custom variables enable conversation-level state management
+- Filters modify the available decision space for the reasoning engine
+- Instructions guide decisions within the available filtered space
+
+### Implementation Guidelines
+1. **Start Simple**: Begin with basic authentication and data validation filters
+2. **Test Thoroughly**: Verify filter conditions work as expected in all scenarios
+3. **Document Logic**: Clearly document the business logic behind each filter
+4. **Monitor Performance**: Track how filters affect conversation flow and success rates
+5. **Iterate Based on Results**: Refine filter conditions based on real-world usage
+
+---
+
+## 9. Response Grounding and Citations
+
+### Grounding Requirements
+The Atlas Reasoning Engine ensures responses are grounded in source information:
+- **Data Sources:** CRM records, knowledge articles, external documents, previous conversation context, action outputs.
+- **Grounding Process:** Validates response content against sources, ensures no hallucinated information, checks for prompt injection risks.
+- **Citation Requirements:** Include source references when using knowledge, link to relevant documentation, reference specific records or articles.
+
+### Best Practices for Grounded Responses
+- Use RAG-enabled actions for knowledge queries.
+- Configure proper data source access and retrievers.
+- Specify required citation formats in topic instructions.
+- Define fallback responses and escalation procedures.
+- Include confidence indicators for responses.
+
+---
+
+## 10. General Best Practices
+- **Completeness:** Ensure topics cover the full user journey and that all necessary actions are defined.
+- **Clarity:** Use clear, user-centric language in all descriptions and instructions.
+- **Consistency:** Maintain consistent formatting and naming conventions throughout the file.
+- **Error Handling:** Define how to handle errors and edge cases within topic instructions and action definitions.
+- **Action-Topic Mapping:** Ensure each action mentioned in topic instructions is defined in the Actions section.
+- **Testing:** Test your configuration against sample queries before deployment.
+
+## 11. Reference Documentation
+For platform capabilities and detailed best practices, refer to the official Salesforce documentation:
+
+### Standard Actions Reference
+- **Actions Reference File:** `SalesforceStandardActions.mdc` in `.cursor/rules/` directory
+- **Usage:** Complete list of 200+ standard actions across 20+ industry categories
+- **Action Categories:** Platform, Financial Services, Healthcare, Automotive, Field Service, Commerce, Communications, Marketing, Sales, Service, and more
+- **Documentation Links:** Each action includes direct link to Salesforce help documentation
+
+### Official Salesforce Documentation
+- **Einstein Documentation:** `https://developer.salesforce.com/docs/einstein/genai/guide/get-started-agents.html`
+- **Agentforce Documentation:** `https://help.salesforce.com/s/articleView?id=ai.generative_ai.htm&type=5`
+- **Topic Instructions Best Practices:** `https://help.salesforce.com/s/articleView?id=ai.copilot_topics_instructions.htm&type=5`
+- **Action Instructions Best Practices:** `https://help.salesforce.com/s/articleView?id=ai.copilot_actions_instructions.htm&type=5`
+- **Troubleshooting Agents:** `https://help.salesforce.com/s/articleView?id=ai.copilot_troubleshoot.htm&type=5`
+- **Agentforce Variables:** 
+  - `https://developer.salesforce.com/blogs/2024/06/agentforce-variables-context-for-every-conversation`
+  - `https://help.salesforce.com/s/articleView?id=ai.copilot_variables.htm&type=5`
+- **Grounding and Citations:** `https://help.salesforce.com/s/articleView?id=ai.copilot_grounding.htm&type=5`

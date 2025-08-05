@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api-server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api-server.js"
+    }
+  ],
+  "env": {
+    "STORAGE_TYPE": "salesforce",
+    "SALESFORCE_CLIENT_ID": "",
+    "SALESFORCE_CLIENT_SECRET": "",
+    "SALESFORCE_LOGIN_URL": "https://login.salesforce.com",
+    "SALESFORCE_API_VERSION": "v58.0"
+  }
+} 

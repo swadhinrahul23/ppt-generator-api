@@ -1,0 +1,425 @@
+# Salesforce Standard Actions Reference
+
+## Usage Instructions
+This file contains the complete list of Salesforce standard actions. When creating Agentforce configurations:
+1. Search this file for relevant actions by category or keyword
+2. Use standard actions when available instead of creating custom actions
+3. Reference the Salesforce documentation links for detailed parameters
+4. Only create custom actions when no standard action meets requirements
+
+## Quick Search Categories
+- **Platform Actions**: Core Salesforce operations (Query Records, Update Record, Get Record Details, etc.)
+- **Service Actions**: Customer service scenarios (Create Case, Cancel Order, Reset Password, etc.)
+- **Sales Actions**: Sales process automation (Create Close Plan, Log a Call, Find Similar Opportunities, etc.)
+- **Field Service Actions**: Appointment and work order management (Create Appointment, Schedule Appointment, Cancel Appointment, etc.)
+- **Financial Services Actions**: Banking and finance operations (Create Case to Block Card, Get Financial Account Balances, etc.)
+- **Healthcare Actions**: Patient and clinical data (Get Patient Data from EMR, Register Patient in EMR, etc.)
+- **Commerce Actions**: E-commerce and retail (Add Order to Cart, Get Most Recent Orders, Create Promotions, etc.)
+- **Marketing Actions**: Campaign and lead management (Create Campaign, Draft Content, Get B2B Marketing Lists, etc.)
+- **Communications Actions**: Telecom and utilities (Get Account Balance, Create Billing Dispute Case, Get Payment History, etc.)
+- **Automotive Actions**: Vehicle and financial services (Get Vehicles for Customer, Create Payment Deferral Case, etc.)
+
+## Complete Actions Reference
+
+### Agentforce Platform Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Answer Questions with Knowledge | Answers a question from a user based on information from relevant knowledge articles and uploaded files | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_answer_questions_with_knowledge.htm&language=en_US&type=5 |
+| Draft or Revise Email | Creates or revises a draft of an email to a recipient based on the user's request and available email types | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_draft_or_revise_email.htm&language=en_US&type=5 |
+| Extract Fields and Values from User Input | Extracts fields and their corresponding values from a record based on the user's request | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_extract_fields_values.htm&language=en_US&type=5 |
+| Get Record Details | Retrieves the details of a record, including object fields and values, records from related lists, and associated tasks and events | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_record_details.htm&language=en_US&type=5 |
+| Identify Object by Name | Interprets the user's input to determine which object the user is referring to and returns a list of matching object names | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_identify_object_by_name.htm&language=en_US&type=5 |
+| Identify Record by Name | Searches for Salesforce records by name and returns a list of matching record IDs | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_identify_record_by_name.htm&language=en_US&type=5 |
+| Query Records | Finds and retrieves Salesforce records based on the user's request and specific conditions | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_query_records.htm&language=en_US&type=5 |
+| Query Records with Aggregate | Answers aggregation questions about Salesforce data, such as count, sum, average, max, min, and group-by | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_query_records_with_aggregate.htm&language=en_US&type=5 |
+| Send Email with Verification Code | Send a verification code to the customer's email to verify their identity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_send_email_verification_code.htm&language=en_US&type=5 |
+| Summarize Record | Generates a summary of a record based on the record type and available prompt templates | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_summarize_record.htm&language=en_US&type=5 |
+| Update Record | Updates one or more fields on a record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_update_record.htm&language=en_US&type=5 |
+| Verify Customer | Verifies the customer's identity based on the one-time passcode (OTP) generated and emailed | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_verify_customer.htm&language=en_US&type=5 |
+
+### Asset Service Management Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Create Service Quote | Creates a quote for specified products | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_svc_quote.htm&language=en_US&type=5 |
+| Create Service Work Order | Creates a work order from a quote for specified products | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_svc_wo.htm&language=en_US&type=5 |
+| Get Asset Warranties | Gets the active asset warranties associated with an asset | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_asset_warranties.htm&language=en_US&type=5 |
+| Get Price Books | Gets the price books for all specified products | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_price_books.htm&language=en_US&type=5 |
+| Get Products | Gets the products associated with a specific work type | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_products.htm&language=en_US&type=5 |
+| Get Service Quote | Gets the approved quotes associated with an asset ID | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_svc_quote.htm&language=en_US&type=5 |
+| Summarize Asset Performance | Summarizes the performance, service condition, and telematics data of an asset | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summ_asset_perf.htm&language=en_US&type=5 |
+| Summarize Vehicle Performance | Summarizes the performance, service condition, and telematics data of a vehicle | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summ_veh_perf.htm&language=en_US&type=5 |
+
+### Automotive Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Create Payment Deferral Case | Creates a case for a payment deferral request | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_payment_def_case.htm&language=en_US&type=5 |
+| Create Payment Due Date Modification Case | Creates a payment due date modification case for a financial product | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_payment_due_date_mod_case.htm&language=en_US&type=5 |
+| Get Automotive Financial Accounts for Service Processes | Gets the financial accounts for which a service process is requested | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_auto_fin_acc_for_svc_proc.htm&language=en_US&type=5 |
+| Get Financial Accounts for a Customer | Gets a list of financial accounts associated with an account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_fin_acc_for_cust.htm&language=en_US&type=5 |
+| Get Updated Terms for Payment Deferral | Checks the eligibility of a payment deferral request and returns updated payment terms | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_updt_terms_for_payment_def.htm&language=en_US&type=5 |
+| Get Updated Terms for Payment Due Date Modification | Checks the eligibility of a payment due date modification request and returns updated terms | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_updt_terms_for_payment_due_date_mod.htm&language=en_US&type=5 |
+| Get Vehicles for a Customer | Gets a list of vehicles associated with an account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_veh_for_cust.htm&language=en_US&type=5 |
+| Summarize Customer Account | Summarizes an account for automotive industry use cases | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summ_cust_acc.htm&language=en_US&type=5 |
+| Summarize Customer Finance Profile | Summarizes the financial information of an account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summ_cust_fin_profile.htm&language=en_US&type=5 |
+| Summarize Financial Account for Customer | Summarizes the financial account for automotive industry use cases | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summ_cust_fin_acc_for_cust.htm&language=en_US&type=5 |
+
+### Collections and Recovery Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Compile Script for Next Call Based on Previous Collections Interactions | Compiles a call script for collections specialists for their next customer conversation | https://help.salesforce.com/s/articleView?id=ai.agent_ref_collections_compile_script.htm&language=en_US&type=5 |
+| Create Case and Related Case Proceeding Records | Creates a case for the collection plan and related case proceeding records if eligible | https://help.salesforce.com/s/articleView?id=ai.agent_ref_collections_create_case.htm&language=en_US&type=5 |
+| Create Promise to Pay | Creates promise-to-pay agreements for borrowers | https://help.salesforce.com/s/articleView?id=ai.agent_ref_collections_create_ptp.htm&language=en_US&type=5 |
+| Generate and Send Payment Link | Creates a payment link and sends it to the borrower | https://help.salesforce.com/s/articleView?id=ai.agent_ref_collections_payment_link.htm&language=en_US&type=5 |
+| Get Payment Method Sets for Merchant Account | Gets a list of payment methods available to a merchant's customer during checkout | https://help.salesforce.com/s/articleView?id=ai.agent_ref_collections_get_payment_sets.htm&language=en_US&type=5 |
+
+### Commerce Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Order to Cart | Reorders items based on the provided order reference number | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_commerce_add_order_to_cart.htm&language=en_US&type=5 |
+| Create Promotions | Creates a Promotion record based on the Salesforce store ID | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_promotions.htm&language=en_US&type=5 |
+| Format Commerce Insights | Displays the insights result header in rich text | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_format_commerce_insights.htm&language=en_US&type=5 |
+| Get Commerce Business Objectives | Retrieves key performance indicators (KPIs) for a store | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_commerce_business_objectives.htm&language=en_US&type=5 |
+| Get Commerce Promotion Templates | Gets a list of suggested promotion templates based on the store ID | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_commerce_promotion_templates.htm&language=en_US&type=5 |
+| Get Most Recent Orders | Retrieves the user's most recent orders | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_commerce_get_most_recent_orders.htm&language=en_US&type=5 |
+| Get Shopper Effective Accounts in Commerce | Retrieves effective accounts associated with the provided user ID and web store ID | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_shopper_effective_accounts.htm&language=en_US&type=5 |
+| Look Up Order Summary for Commerce | Gets the user's order summary with the provided order reference number | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_commerce_look_up_order.htm&language=en_US&type=5 |
+
+### Communications Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Get Account Record | Fetches an account record using the account number and contact email address | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_account_record.htm&language=en_US&type=5 |
+| Get All Invoices | Fetches all invoices or bills associated with a specific account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_all_invoices.htm&language=en_US&type=5 |
+| Get Invoice Charges | Fetches the invoice charges for a given invoice to clarify billing inquiries | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_invoice_charges.htm&language=en_US&type=5 |
+| Get Account Balance | Fetches and shows the balance and service details for a given account number | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_account_balance.htm&language=en_US&type=5 |
+| Get Invoice Details | Fetches and shows key invoice details for a given invoice number | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_invoice_details.htm&language=en_US&type=5 |
+| Create Billing Dispute Case | Creates a case to raise a billing dispute | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_billing_dispute_case.htm&language=en_US&type=5 |
+| Get Payment History | Fetches and shows recent transactions and verifies past payments | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_payment_history.htm&language=en_US&type=5 |
+
+### Experience Builder Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Draft Text for Experience Builder Site (Beta) | Creates or revises text in the Text Block component on enhanced Lightning Web Runtime sites | https://help.salesforce.com/s/articleView?id=ai.agent_ref_experience_builder_draft_text.htm&language=en_US&type=5 |
+
+### Field Service Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Assign Appointment to Service Resource | Assigns the service appointment to a service resource in their schedule | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_assign_appointment_resource.htm&language=en_US&type=5 |
+| Cancel Appointment | Cancels the service appointment | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_cancel_appointment.htm&language=en_US&type=5 |
+| Create Appointment | Creates a service appointment for Field Service | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_appointment.htm&language=en_US&type=5 |
+| Create Appointment List Filter | Creates a filter for the service appointment list in the dispatcher console | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_appointment_list_filter.htm&language=en_US&type=5 |
+| Get Appointment Information | Gets information about service appointments | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_appointment_info.htm&language=en_US&type=5 |
+| Get Appointment Time Slots | Gets a list of available time slots for the service appointment | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_appointment_time_slots.htm&language=en_US&type=5 |
+| Get Appointments to Fill Gaps | Searches for gaps for a service resource and returns suitable appointments | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_appointments_fill_gaps.htm&language=en_US&type=5 |
+| Get Work Types | Gets the org's work types | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_work_types.htm&language=en_US&type=5 |
+| Refine Post-Work Summary | Refines and adds information to a summary of a Salesforce work order record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_refine_postwork_summary_for_field_service.htm&language=en_US&type=5 |
+| Schedule Appointment | Schedules a service appointment based on a scheduling policy | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_schedule_appointment.htm&language=en_US&type=5 |
+| Summarize Scheduling Issues | Creates a summary of appointments that require immediate attention | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_summarize_scheduling_issues.htm&language=en_US&type=5 |
+| Summarize Service Appointment Notes | Generates a summary of one or more service appointment notes | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_summarize_appointments.htm&language=en_US&type=5 |
+| Update Appointment Times | Updates the service appointment time fields | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_update_appointment_times.htm&language=en_US&type=5 |
+
+### Financial Services Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Create Case to Block Card | Creates a case to block a card | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_block_card.htm&language=en_US&type=5 |
+| Create Case for Fee Reversal | Creates a case to reverse a fee charged on a financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_fee_reversal.htm&language=en_US&type=5 |
+| Create Case for Financial Account Address Update | Creates a case to update the address for an account or financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_fin_acc_addr_update.htm&language=en_US&type=5 |
+| Create Case for Manage Card Settings | Creates a case to manage card settings | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_manage_card_settings.htm&language=en_US&type=5 |
+| Create Case for Order Checkbook | Creates a case for the new checkbook request | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_order_checkbook.htm&language=en_US&type=5 |
+| Create Case for Stop Check Payment | Creates a case to stop a check payment for a financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_stop_check_payment.htm&language=en_US&type=5 |
+| Create Case for Transfer Funds | Creates a case to transfer funds between customer's financial accounts | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_transfer_funds.htm&language=en_US&type=5 |
+| Create Case for Travel Notification | Creates a case to notify the bank about upcoming trips | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_create_case_travel_notification.htm&language=en_US&type=5 |
+| Create Interaction | Creates interaction records for meetings and conversations with clients | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_interaction.htm&language=en_US&type=5 |
+| Create Interaction Summary | Logs meeting notes, next steps, and related records with interaction summary records | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_interactionsum.htm&language=en_US&type=5 |
+| Create Interaction Attendee | Creates an interaction attendee record to capture meeting attendees | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_interactionattendee.htm&language=en_US&type=5 |
+| Create Account Plan Objective | Creates account plan objective records for strategic initiatives | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_accountplanobj.htm&language=en_US&type=5 |
+| Create Account Plan Objective Measure | Creates account plan objective measure records to store performance metrics | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_accountplanobjmeas.htm&language=en_US&type=5 |
+| Create Opportunity Based on Meeting Notes | Creates an opportunity record based on meeting notes | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_meeting_opportunity.htm&language=en_US&type=5 |
+| Get Card Details for Account | Retrieves the card details for a specific account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_acc_card_details.htm&language=en_US&type=5 |
+| Get Card Settings | Gets the details of the preconfigured settings associated with the selected card | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_card_settings.htm&language=en_US&type=5 |
+| Get Client Life Events | Provides wealth advisors with a list of past and upcoming life events | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_get_life_events.htm&language=en_US&type=5 |
+| Get Fee Transactions from Financial Account | Retrieves the list of the latest fee transactions levied on a financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_fin_acc_fee_transactions.htm&language=en_US&type=5 |
+| Get Financial Account Addresses | Retrieves the address details associated with a specific account or financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_fin_acc_addresses.htm&language=en_US&type=5 |
+| Get Financial Account Balances | Retrieves the financial account balances associated with a specific financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_fin_acc_balances.htm&language=en_US&type=5 |
+| Get Financial Accounts for an Account | Retrieves the information of all financial accounts associated with a specific account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_fin_acc_for_account.htm&language=en_US&type=5 |
+| Get Financial Account Transactions | Retrieves all financial account transactions associated with a specific financial account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_fin_acc_transactions.htm&language=en_US&type=5 |
+| Get Interactions By Date Range | Gets the ten most recent interaction records within a given date range | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_interactions_range.htm&language=en_US&type=5 |
+| Restructure Meeting Notes | Organizes raw meeting notes into key points, decisions, and action items | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_restruct_meeting_notes.htm&language=en_US&type=5 |
+| Review Asset Allocation | Provides wealth advisors with a comparison of current vs target asset allocation | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_review_asset_allocation.htm&language=en_US&type=5 |
+| Summarize Account Financial Details | Provides wealth advisors with real-time summary of an account's financial profile | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_summarize_account_financial.htm&language=en_US&type=5 |
+| Summarize Household Financial Details | Provides wealth advisors with real-time summary of a household's financial profile | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_summarize_household_financial.htm&language=en_US&type=5 |
+| Summarize Financial Plans and Goals | Finds and retrieves financial plans and goals records based on user input | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_summarize_plans_goals.htm&language=en_US&type=5 |
+| Summarize Portfolio Performance | Provides wealth advisors with a summary of an account's portfolio performance | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_fsc_summarize_portfolio.htm&language=en_US&type=5 |
+
+### Health Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Classify Disease Surveillance Cases | Suggests a classification for a disease investigation case | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_classify_cases.htm&language=en_US&type=5 |
+| Extract Patient Home Visit Requirements | Extracts details about home visit requirements from patient voice calls | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_extract_homevisit_requirements.htm&language=en_US&type=5 |
+| Generate FHIR Payload | Generates the FHIR input payload required to register a patient in the EHR system | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_generate_fhir_payload.htm&language=en_US&type=5 |
+| Get Patient Data from EMR | Gets clinical, demographic, and administrative patient data from the EMR system | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_get_patient_data.htm&language=en_US&type=5 |
+| Register a Patient in EMR | Registers a patient in the Electronic Medical Record System | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_register_a_patient.htm&language=en_US&type=5 |
+| Summarize Patient Home Healthcare Details | Creates a rich-text summary of a patient's home healthcare details | https://help.salesforce.com/s/articleView?id=ai.agent_ref_hc_summarize_homehealthcare_details.htm&language=en_US&type=5 |
+
+### Insurance Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Get Insurance Quote Details | Retrieves details about a quote | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_get_quote.htm&language=en_US&type=5 |
+| Summarize Insurance Policyholder | Retrieves a summary of a policyholder account with policy, participant, asset, coverage and claim details | https://help.salesforce.com/s/articleView?id=ai.agent_ref_fsc_summarize_insurance_policyholder.htm&language=en_US&type=5 |
+
+### Inventory Management Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Get Search Criteria and Results | Finds the search configuration and matching search criteria based on user input | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_search_criteria_and_results.htm&language=en_US&type=5 |
+
+### Life Sciences Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Site and Investigator to Study | Creates a care program site record from a healthcare facility, provider, and research study | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_add_site_and_investigator_to_study.htm&language=en_US&type=5 |
+| Add Sites Search Results to Study | Creates care program site records from search results and research study records | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_add_site_search_results.htm&language=en_US&type=5 |
+| Get Omniscript IDs From Research Study | Gets all the assessments associated with the care program | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_get_omniscript_ids.htm&language=en_US&type=5 |
+| Get Site Search Filters for Research Study | Gets the site search filters for a research study | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_get_site_search_filters.htm&language=en_US&type=5 |
+| Go to Care Program Sites | Navigate to the care program sites after they're added to a research study | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_go_to_care_program_sites.htm&language=en_US&type=5 |
+| Send Site Feasibility Assessments | Sends the feasibility assessments to the sites | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_send_site_feasibility_assessments.htm&language=en_US&type=5 |
+| Summarize Investigator | Summarizes the healthcare provider record for a specific research study | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_summarize_investigator.htm&language=en_US&type=5 |
+| Summarize Patient Response for Benefits Reverification | Analyzes the patient's response for benefit reverification email | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_summarize_patient_response_for_benefits_reverification.htm&language=en_US&type=5 |
+| Summarize Site | Summarizes the details of a healthcare facility in the context of a research study | https://help.salesforce.com/s/articleView?id=ai.agent_ref_lsc_summarize_site.htm&language=en_US&type=5 |
+
+### Loyalty Management Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add or Update Limit in Pricing Promotion | Gathers information about limits to add or update in a pricing promotion | https://help.salesforce.com/s/articleView?id=ai.agent_ref_loyalty_pricing_limits.htm&language=en_US&type=5 |
+| Create or Update Pricing Promotion | Gathers information about the pricing promotion to create or update | https://help.salesforce.com/s/articleView?id=ai.agent_ref_loyalty_pricing_promotion.htm&language=en_US&type=5 |
+| Create or Update Promotion using Accrual Promotion Template | Gathers information about the loyalty accrual promotion to create or update | https://help.salesforce.com/s/articleView?id=ai.agent_ref_loyalty_accrual_template.htm&language=en_US&type=5 |
+| Create or Update Promotion using a Spend X Template | Gathers information about promotions that reward customers based on order value | https://help.salesforce.com/s/articleView?id=ai.agent_ref_loyalty_spendx_template.htm&language=en_US&type=5 |
+| Generate Loyalty Promotion Email | Creates the subject and content of a draft launch email for a promotion | https://help.salesforce.com/s/articleView?id=ai.agent_ref_loyalty_email_template.htm&language=en_US&type=5 |
+
+### Marketing Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Create a Campaign From a Brief | Creates a campaign preview based on the campaign brief | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_a_campaign_from_brief.htm&language=en_US&type=5 |
+| Draft a Campaign Brief | Creates a draft of the campaign brief based on user-provided campaign details | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_draft_a_campaign_brief.htm&language=en_US&type=5 |
+| Draft Content | Creates or revises copy for text-based properties for campaigns and initiatives | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_draft_content.htm&language=en_US&type=5 |
+| Create Section with Content | Creates a section in an email or landing page for campaigns and initiatives | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_create_section_with_content.htm&language=en_US&type=5 |
+| Get B2B Engagement Studio Programs | Retrieves all Engagement Studio programs (nurture campaigns) | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_get_b2b_engagement_studio_programs.htm&language=en_US&type=5 |
+| Get B2B Marketing List Memberships | Retrieves a list of marketing lists a prospect is a member of | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_get_b2b_marketing_list_memberships.htm&language=en_US&type=5 |
+| Get B2B Marketing Lists | Retrieves all marketing program lists for a prospect | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_get_b2b_marketing_lists.htm&language=en_US&type=5 |
+| Get Campaign Objectives (Beta) | Retrieves campaign objectives based on the selected channel type | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_mi_get_campaign_objectives.htm&language=en_US&type=5 |
+| Get Channel Types (Beta) | Retrieves a list of available channel types for campaign optimization | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_mi_get_channel_types.htm&language=en_US&type=5 |
+| Get Low Performing Ads (Beta) | Retrieves a list of low-performing ads based on campaign metrics | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_mi_get_low_performing_ads.htm&language=en_US&type=5 |
+| Get Metrics (Beta) | Retrieves campaign performance metrics based on the selected channel and objective | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mc_mi_get_metrics.htm&language=en_US&type=5 |
+| Get Score for Record ID | Retrieves marketing scores from Data Cloud for account, contact, lead, and prospect records | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_record_score.htm&language=en_US&type=5 |
+| Save Campaign | Saves the campaign and its draft components | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_save_campaign.htm&language=en_US&type=5 |
+| Save Campaign Brief | Saves the brief information including name, description, key message, and target audience | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_save_campaign_brief.htm&language=en_US&type=5 |
+| Sign Up Prospect for B2B Marketing Lists | Signs up a prospect for a B2B Marketing List | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_sign_up_prospect_for_b2b_marketing_lists.htm&language=en_US&type=5 |
+| Summarize a Campaign | Summarizes a campaign with details like flow name, open rate, click through rate | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_campaign_summary.htm&language=en_US&type=5 |
+| Upsert B2B Prospect | Creates or updates a prospect record, including its profile, score, and owner | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_upsert_b2b_prospect.htm&language=en_US&type=5 |
+| View B2B Prospect | Retrieves a prospect record, including its profile, score, and owner | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_mcae_view_b2b_prospect.htm&language=en_US&type=5 |
+
+### Media Actions (Beta)
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Create Media Opportunity | Creates an opportunity and an ad opportunity for a media proposal or advertisement campaign | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_create_opportunity.htm&language=en_US&type=5 |
+| Create Media Proposal | Creates a quote and an ad quote for a media proposal, and adds media products | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_create_proposal.htm&language=en_US&type=5 |
+| Find Media Opportunity | Gets a list of opportunities for an advertiser or agency account | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_find_opportunity.htm&language=en_US&type=5 |
+| Get Media Products | Gets a filtered list of media products that match a search phrase | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_get_products.htm&language=en_US&type=5 |
+| Get Media Products Based on Targeting | Gets a list of media products that match a targeting criteria | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_get_products_by_targeting.htm&language=en_US&type=5 |
+| Media Opportunity Summary | Summarizes media opportunities with actionable information | https://help.salesforce.com/s/articleView?id=ai.agent_ref_media_opportunity_summary.htm&language=en_US&type=5 |
+
+### Personalization Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Get Context | Provides an agent with personalized context from Data Cloud to select appropriate next actions | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_personalization_get_context.htm&language=en_US&type=5 |
+
+### Revenue Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Generate Product Description | Generates product descriptions within Product Catalog Management in Revenue Cloud | https://help.salesforce.com/s/articleView?id=ai.agent_ref_generate_product_description.htm&language=en_US&type=5 |
+| Summarize Contract Document | Creates clear and business-focused contract overviews | https://help.salesforce.com/s/articleView?id=ai.agent_ref_revenue_summarize_contract_document.htm&language=en_US&type=5 |
+| Query Contract Document | Finds and retrieves relevant information from a contract document | https://help.salesforce.com/s/articleView?id=ai.agent_ref_revenue_query_contract_document.htm&language=en_US&type=5 |
+
+### Program Based Business Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Forecasts to Opportunities Filter Criteria | Creates the filter criteria based on the input provided by the user | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_forecasts_to_opty_filter_criteria.htm&language=en_US&type=5 |
+| Forecast to Opportunity Execution | Transforms manufacturing program records based on filter criteria and grouping strategy | https://help.salesforce.com/s/articleView?id=ai.agent_ref_transform_program_forecast_to_opportunity.htm&language=en_US&type=5 |
+| OpportunityJsonBuilder | Creates an object that contains the new opportunity details | https://help.salesforce.com/s/articleView?id=ai.agent_ref_create_opportunity_details.htm&language=en_US&type=5 |
+
+### Revenue Cloud Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Quote Line Item to Quote | Creates a line item record and adds it to a Revenue Cloud quote | https://help.salesforce.com/s/articleView?id=ai.agent_ref_rev_cloud_add_quotelineitems_to_quote.htm&language=en_US&type=5 |
+| Apply Discount To Quote Line Item | Applies a discount, expressed as a percentage, to a line item on a Revenue Cloud quote | https://help.salesforce.com/s/articleView?id=ai.agent_ref_rev_cloud_apply_discount_to_quotelineitem.htm&language=en_US&type=5 |
+| Create Amendment Quote | Creates an amendment quote in Revenue Cloud and generates a related amendment opportunity | https://help.salesforce.com/s/articleView?id=ai.agent_ref_rev_cloud_create_amendment_quote.htm&language=en_US&type=5 |
+| Create Initial Quote | Creates a Revenue Cloud quote for a new business from an opportunity | https://help.salesforce.com/s/articleView?id=ai.agent_ref_rev_cloud_create_initial_quote.htm&language=en_US&type=5 |
+| Query Quote Line Items | Gets quote line item records for specified product IDs | https://help.salesforce.com/s/articleView?id=ai.agent_ref_rev_cloud_query_quote_line_items.htm&language=en_US&type=5 |
+
+### Sales Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Record to Cadence | Associates a prospect with a cadence directly from Einstein Copilot | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_add_record_to_cadence.htm&language=en_US&type=5 |
+| Create a Label | Creates a personalized label to contextually group and organize records | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_a_label.htm&language=en_US&type=5 |
+| Create a To-Do | Creates tasks for follow-up or assignments to complete | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_a_to_do.htm&language=en_US&type=5 |
+| Create Close Plan | Generates a sales plan to help sales reps close an opportunity by its target date | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_close_plan.htm&language=en_US&type=5 |
+| Explore Conversation | Answers questions about a voice or video call based on the call transcript | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_explore_conversation.htm&language=en_US&type=5 |
+| Find Contact Interactions | Identifies the list of opportunities or an account that a specific contact has influenced | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_find_contact_interactions.htm&language=en_US&type=5 |
+| Find Past Collaborators | Identifies individuals with past collaborative ties for introductions | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_find_past_collaborators.htm&language=en_US&type=5 |
+| Find Similar Interactions | Searches interaction records and generates an engagement summary | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_find_similar_interactions.htm&language=en_US&type=5 |
+| Find Similar Opportunities | Searches for and returns opportunities similar to a specified opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_find_similar_opportunities.htm&language=en_US&type=5 |
+| Get Activities Timeline | Retrieves a list of all CRM activities associated with a record during a specified time frame | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_activities_timeline.htm&language=en_US&type=5 |
+| Get Activity Details | Provides a brief summary of an activity with overview and relevant details | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_activity_details.htm&language=en_US&type=5 |
+| Get Forecast Guidance | Gathers information about how a sales rep is tracking toward meeting their quota | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_forecast_guidance.htm&language=en_US&type=5 |
+| Get Product Pricing | Gets the pricing information of a product including historical sale price data | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_product_pricing.htm&language=en_US&type=5 |
+| Identify Contact Role | Identifies the role, significance, or impact of a contact in influencing opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_identify_contact_role.htm&language=en_US&type=5 |
+| Identify Key Contacts | Identifies key contacts associated with an account or opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_identify_key_contacts.htm&language=en_US&type=5 |
+| Label a Record | Assigns personalized labels to records for grouping and organization | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_label_a_record.htm&language=en_US&type=5 |
+| Log a Call | Logs a call with a customer as a task in the Activity Timeline | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_log_a_call.htm&language=en_US&type=5 |
+| Prioritize Opportunities | Identifies and ranks a rep's top sales opportunities in order of priority | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_prioritize_opportunities.htm&language=en_US&type=5 |
+| Review My Day | Provides an overview of the seller's daily agenda and sales performance | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_review_my_day.htm&language=en_US&type=5 |
+| Send Meeting Request | Creates an email draft to request a meeting with three possible time slots | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_send_meeting_request.htm&language=en_US&type=5 |
+| Suggest Next Step for Opportunity | Identifies and suggests a value for the Next Step field on an opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_mgmt_suggest_next_step.htm&language=en_US&type=5 |
+| Suggest Stage for Opportunity | Identifies and suggests the appropriate stage for an opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_mgmt_suggest_stage.htm&language=en_US&type=5 |
+
+### Sales Coach Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Give Feedback on Needs Analysis Stage | Provides sales representative with feedback on a sales pitch for an opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_coach_needs_analysis_feedback.htm&language=en_US&type=5 |
+| Give Feedback on Negotiation/Review Stage | Provides sales representative with feedback on a sales pitch in Negotiation/Review stage | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_coach_negotiation_review_feedback.htm&language=en_US&type=5 |
+| Give Feedback on Proposal/Price Quote Stage | Provides sales representatives with feedback on a sales pitch in Proposal/Price Quote stage | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_coach_proposal_feedback.htm&language=en_US&type=5 |
+| Give Feedback on Qualification Stage | Provides sales reps with coaching on how well they've qualified a specific opportunity | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_coach_qualification_feedback.htm&language=en_US&type=5 |
+
+### Sales SDR Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Draft Generic Reply Email | Drafts a generic reply email to a lead who has emailed an off-topic question | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_draft_generic_reply_email.htm&language=en_US&type=5 |
+| Draft Initial Outreach Email | Drafts an initial sales outreach email to a lead based on the lead record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_draft_initial_outreach_email.htm&language=en_US&type=5 |
+| Draft Meeting Request Email | Drafts an email with a meeting invite to a lead who has expressed interest | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_draft_meeting_request_email.htm&language=en_US&type=5 |
+| Draft Nudge Email | Drafts a follow-up email to a lead who has not yet replied to an earlier email | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_draft_nudge_email.htm&language=en_US&type=5 |
+| Opt-Out Lead | Sets a lead's Email Opt-Out field to true when the lead asks not to be emailed | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_opt_out_lead.htm&language=en_US&type=5 |
+| Schedule Email | Schedules an email to be sent by the agent at the specified time | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_sales_sdr_schedule_email.htm&language=en_US&type=5 |
+
+### Sales Agreement Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Get Attribute Details | Gets the details of an attribute definition and its value | https://help.salesforce.com/s/articleView?id=ai.agent_ref_get_attribute_details.htm&language=en_US&type=5 |
+| Perform Bulk Update for Sales Agreement Metrics | Updates the metrics of sales agreements based on filtering criteria | https://help.salesforce.com/s/articleView?id=ai.agent_ref_perform_bulk_update_for_sales_agreement_metrics.htm&language=en_US&type=5 |
+| Summarize Sales Agreement Performance | Generates a summary of the performance of a sales agreement | https://help.salesforce.com/s/articleView?id=ai.agent_ref_summarize_sales_agreement_performance.htm&language=en_US&type=5 |
+
+### Security Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Classify Security Risk | Identifies and prioritizes security risks and threats within Salesforce Security data | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_classify_security_risk.htm&language=en_US&type=5 |
+| Get Policy Details | Retrieves information about a policy in your Policy Center setup | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_policy_details.htm&language=en_US&type=5 |
+| Get Policies by Object | Retrieves a list of all policies that contain a specific object | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_policies_by_object.htm&language=en_US&type=5 |
+| Get Policies by Policy Type | Retrieves a complete list of every policy of a specific policy type | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_policies_by_policy_type.htm&language=en_US&type=5 |
+| Get Security Metric Data | Translates your security posture into natural language | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_security_metric_data.htm&language=en_US&type=5 |
+| Get Security Alerts | Provides conversational, proactive security posture alerts | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_security_alerts.htm&language=en_US&type=5 |
+
+### Service Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Case Comment | Lets a customer add a comment to a case | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_add_case_comment.htm&language=en_US&type=5 |
+| Cancel Order | Cancels a customer's order | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_cancel_order.htm&language=en_US&type=5 |
+| Create Case | Lets a customer create a case | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_case.htm&language=en_US&type=5 |
+| Create Case with Enhanced Data | Creates a detailed support case with structured summary and conversation history | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_create_case_with_enhanced_data.htm&language=en_US&type=5 |
+| Draft Case Response | Identifies a solution for the user's query based on similar closed cases | https://help.salesforce.com/s/articleView?id=ai.copilot_action_draft_case_response.htm&language=en_US&type=5 |
+| Enhance Product Description | Analyzes product descriptions against customer reviews to identify discrepancies | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_enhance_product_description.htm&language=en_US&type=5 |
+| Finalize New Delivery Time | Updates the scheduled delivery time to the time slot selected by the customer | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_finalize_new_delivery_time.htm&language=en_US&type=5 |
+| Finalize Reservation | Books and finalizes a reservation for the time designated by the customer | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_finalize_reservation.htm&language=en_US&type=5 |
+| Find Similar Cases | Fetches a list of closed cases that are similar or related to the user's query | https://help.salesforce.com/s/articleView?id=ai.copilot_action_find_similar_cases.htm&language=en_US&type=5 |
+| Get All Cases for Contact | Returns a list of cases related to a given contact record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_all_cases_for_contact.htm&language=en_US&type=5 |
+| Get Case By Case Number | Returns a case associated with a given contact record and case number | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_cases_by_case_number.htm&language=en_US&type=5 |
+| Get Case By Verified Case Number | Returns a case associated with a given verified contact ID and case number | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_cases_verified_case_number.htm&language=en_US&type=5 |
+| Get Cases for Verified Contact | Returns a list of cases related to a given verified contact ID | https://help.salesforce.com/s/articleView?id=ai.copilot_action_get_cases_verified_contact.htm&language=en_US&type=5 |
+| Get Delivery Time Slots | Returns a list of available time slots to schedule a delivery | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_delivery_time_slots.htm&language=en_US&type=5 |
+| Get Order by Order Number | Returns the order information associated with a given contact ID and order number | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_order_by_order_number.htm&language=en_US&type=5 |
+| Get Orders By Contact | Returns a list of orders associated with a given contact record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_orders_by_contact.htm&language=en_US&type=5 |
+| Get Personalized Recommendations | Generates product and content recommendations tailored to the user's preferences | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_persnl_get_personalized_recommendations.htm&language=en_US&type=5 |
+| Get Reservation Time Slots | Returns a list of available time slots for the date specified by the customer | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_get_reservation_time_slots.htm&language=en_US&type=5 |
+| Identify Customer By Email | Identifies a customer by their email address and returns their contact record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_identify_customer_email.htm&language=en_US&type=5 |
+| Raise Flag for Supervisor | Raises a flag in Omni Supervisor when an AI agent conversation requires attention | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_raise_flag_for_supervisor.htm&language=en_US&type=5 |
+| Reset Password | Sends a password reset link to the email address associated with the given contact record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_reset_password.htm&language=en_US&type=5 |
+| Reset Secure Password | Sends a password reset link to the email address associated with the given verified contact ID | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_reset_secure_password.htm&language=en_US&type=5 |
+| Summarize Product Reviews | Summarizes customer reviews and feedback to identify the top products | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_summarize_product_reviews.htm&language=en_US&type=5 |
+| Summarize Service Engagement | Summarizes engagements for a customer, theme, or channel | https://help.salesforce.com/s/articleView?id=ai.copilot_action_summarize_engagement.htm&language=en_US&type=5 |
+| Update Customer Contact | Updates fields on a customer's contact record | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_update_customer_contact.htm&language=en_US&type=5 |
+| Update Omni-Channel User Configuration | Allows supervisors to change reps' presence statuses and queue assignments | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_update_user_config.htm&language=en_US&type=5 |
+| Update Verified Contact | Updates fields on a verified customer's contact ID | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_update_verified_contact.htm&language=en_US&type=5 |
+
+### Setup Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Answer Questions with Salesforce Documentation | Answers questions based on relevant Salesforce documentation | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_ref_answer_questions_with_documentation.htm&language=en_US&type=5 |
+| Create External Client App | Creates and configures an external client app | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_create_external_client_app.htm&language=en_US&type=5 |
+| Get and Explain Object Permissions of User (Beta) | Gets the specified user's object permissions for a given object | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_get_object_permissions.htm&language=en_US&type=5 |
+| Get and Explain User Permissions of User (Beta) | Gets whether a specified user is assigned the required user permissions | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_get_user_permissions.htm&language=en_US&type=5 |
+| Identify Field By Name | Interprets the user's input to determine if the field exists within an object | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_identify_field_by_name.htm&language=en_US&type=5 |
+| Identify Object By Name (Object Management) | Interprets user input to determine which object the user is referring to | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_identify_object_by_name.htm&language=en_US&type=5 |
+| Identify User Permissions by Name (Beta) | Gets the list of the most relevant user permissions required for a specified task | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_identify_user_permissions.htm&language=en_US&type=5 |
+| Migrate Connected App | Identifies the configurations of a connected app and creates an identical external client app | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_migrate_connected_app.htm&language=en_US&type=5 |
+| Summarize OAuth in Connected App | Generates a summary of the OAuth configurations for a connected app | https://help.salesforce.com/s/articleView?id=ai.setup_agent_action_summarize_oauth_in_connected_app.htm&language=en_US&type=5 |
+
+### Scheduler Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Cancel Appointment For Scheduler | Cancels the specified service appointments | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_cancel_appointment.htm&language=en_US&type=5 |
+| Collect Appointment Details for Scheduler | Collects the details required to schedule a service appointment | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_collect_appointment_details.htm&language=en_US&type=5 |
+| Create and Schedule Appointment for Scheduler | Creates and schedules appointments | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_create_and_schedule_appointment.htm&language=en_US&type=5 |
+| Get Appointment Details for Scheduler | Retrieves the details of an existing service appointment | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_get_appointment_details.htm&language=en_US&type=5 |
+| Get Appointment Time Slots for Scheduler | Gets the available slots for the appointment | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_get_appointment_time_slots.htm&language=en_US&type=5 |
+| List Appointments for Scheduler | Gets service appointments for a specific date and returns the appointment IDs | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_scheduler_list_appointments.htm&language=en_US&type=5 |
+
+### Slack Actions
+
+| Action | Purpose | Link |
+|--------|---------|------|
+| Add Users to a Slack Channel | Adds members to a channel you specify | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_add_users_slack_channel.htm&language=en_US&type=5 |
+| Archive a Slack Channel | Archives a channel in Slack when it's no longer needed | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_archive_slack_channel.htm&language=en_US&type=5 |
+| Create a Salesforce Channel in Slack | Creates a Salesforce Channel in Slack | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_create_sf_channel.htm&language=en_US&type=5 |
+| Create a Slack Canvas | Creates and formats a new Slack canvas with the provided information | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_create_canvas.htm&language=en_US&type=5 |
+| Create a Slack Channel | Creates a public or private Slack channel | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_create_slack_channel.htm&language=en_US&type=5 |
+| List Slack Workspaces | Lists all workspaces in a Slack Enterprise organization | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_list_slack_workspaces.htm&language=en_US&type=5 |
+| Look Up a Salesforce Channel in Slack | Identifies a Salesforce Channel in Slack for additional actions | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_look_up_salesforce_channel_slack.htm&language=en_US&type=5 |
+| Look Up a Slack User | Uses Salesforce user IDs to identify Slack users for additional actions | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_look_up_user.htm&language=en_US&type=5 |
+| Search Slack | Searches public Slack messages for the requested information | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_search.htm&language=en_US&type=5 |
+| Send a Slack Direct Message | Sends a Slack direct message (DM) visible between the user and the recipient | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_send_direct_message.htm&language=en_US&type=5 |
+| Send a Slack Message to a Channel | Sends a message to a Slack channel you specify | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_send_slack_message_channel.htm&language=en_US&type=5 |
+| Share a Slack Canvas | Sends a Slack Canvas to a Slack Channel or Direct Message | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_share_slack_canvas.htm&language=en_US&type=5 |
+| Update a Slack Canvas | Updates a Slack canvas created earlier in the conversation | https://help.salesforce.com/s/articleView?id=ai.copilot_actions_ref_slack_update_canvas.htm&language=en_US&type=5 |
+
+---
+
+**Total Actions:** 200+ standard actions across 20+ industry and functional categories
+
+**Note:** Some actions are marked as Beta and have limited functionality. Actions require appropriate licenses and permissions to use. Einstein Requests will be consumed when these actions are enabled and used.
+description:
+globs:
+alwaysApply: false
+---
