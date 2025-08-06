@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node api/index.js",
     "dev": "vercel dev",
-    "build": "echo 'No build step required'"
+    "build": "echo 'Build completed'"
   },
   "dependencies": {
     "pptxgenjs": "^3.12.0"

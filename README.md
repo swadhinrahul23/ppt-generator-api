@@ -1,14 +1,13 @@
 # PPT Generator API for Salesforce Agentforce
 
-A Node.js API server that generates PowerPoint presentations and integrates with Salesforce Agentforce agents.
+A serverless Node.js API that generates PowerPoint presentations and integrates with Salesforce Agentforce agents.
 
 ## Features
 
 - ✅ Generate PPTX presentations from text content
 - ✅ Multiple themes (modern, classic, minimal, creative)
 - ✅ Content processing methods (paragraph, topic, length, keywords)
-- ✅ Salesforce Files integration for storage
-- ✅ Download links for generated presentations
+- ✅ Serverless deployment on Vercel
 - ✅ RESTful API endpoints
 
 ## API Endpoints
@@ -28,6 +27,13 @@ A Node.js API server that generates PowerPoint presentations and integrates with
 3. **Deploy** automatically
 4. **Get your HTTPS URL** (e.g., `https://your-app.vercel.app`)
 
+### Vercel Configuration
+
+This project uses Vercel's auto-detection for serverless functions:
+- **Function**: `api/index.js` (auto-detected)
+- **Framework**: Node.js (auto-detected)
+- **Build**: No build step required
+
 ### Update Salesforce Configuration
 
 1. **Update Apex Class** (`PPTAgentforceGenerator_PPTX.cls`):
@@ -43,24 +49,28 @@ A Node.js API server that generates PowerPoint presentations and integrates with
 
 ## Environment Variables
 
-Set these in Vercel dashboard:
+Set these in Vercel dashboard (optional):
 
 ```
-STORAGE_TYPE=salesforce
-SALESFORCE_LOGIN_URL=https://your-instance.salesforce.com
-SALESFORCE_CLIENT_ID=your_connected_app_client_id
-SALESFORCE_CLIENT_SECRET=your_connected_app_client_secret
-SALESFORCE_API_VERSION=v58.0
+STORAGE_TYPE=local
 ```
 
 ## Local Development
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
-Server runs on `http://localhost:3001`
+## Project Structure
+
+```
+├── api/
+│   └── index.js          # Main serverless function
+├── PPTAgentforceGenerator_PPTX.cls  # Salesforce Apex class
+├── package.json          # Dependencies
+└── README.md            # This file
+```
 
 ## Salesforce Integration
 
@@ -68,7 +78,6 @@ The API integrates with Salesforce Agentforce agents through the `PPTAgentforceG
 
 - Accepts content from Agentforce agents
 - Calls the external API to generate PPTX files
-- Stores files in Salesforce Files
 - Returns download links for sharing
 
 ## License
