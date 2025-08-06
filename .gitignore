@@ -1,0 +1,131 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Temporary files
+temp/
+uploads/
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Salesforce files (if any)
+*.cls-meta.xml
+*.trigger-meta.xml
+*.object-meta.xml
+*.field-meta.xml
+*.page-meta.xml
+*.component-meta.xml
+*.app-meta.xml
+*.tab-meta.xml
+*.profile-meta.xml
+*.permissionset-meta.xml
+*.queue-meta.xml
+*.group-meta.xml
+*.role-meta.xml
+*.report-meta.xml
+*.dashboard-meta.xml
+*.document-meta.xml
+*.email-meta.xml
+*.letterhead-meta.xml
+*.folder-meta.xml
+*.workflow-meta.xml
+*.approvalProcess-meta.xml
+*.assignmentRules-meta.xml
+*.autoResponseRules-meta.xml
+*.escalationRules-meta.xml
+*.postTemplate-meta.xml
+*.flow-meta.xml
+*.flowDefinition-meta.xml
+*.process-meta.xml
+*.quickAction-meta.xml
+*.flexipage-meta.xml
+*.globalValueSet-meta.xml
+*.standardValueSet-meta.xml
+*.customObjectTranslation-meta.xml
+*.labels-meta.xml
+*.staticresource-meta.xml
+*.connectedapp-meta.xml
+*.authprovider-meta.xml
+*.namedCredential-meta.xml
+*.remoteSiteSetting-meta.xml
+*.corsWhitelistOrigin-meta.xml
+*.cspTrustedSite-meta.xml
+*.certificate-meta.xml
+*.installedPackage-meta.xml
+*.package-meta.xml
+*.customPermission-meta.xml
+*.dataCategoryGroup-meta.xml
+*.externalDataSource-meta.xml
+*.index-meta.xml
+*.sharingRules-meta.xml
+*.siteDotCom-meta.xml
+*.synonymDictionary-meta.xml
+*.territory2-meta.xml
+*.territory2Model-meta.xml
+*.territory2Type-meta.xml
+*.waveApplication-meta.xml
+*.waveDashboard-meta.xml
+*.waveDataflow-meta.xml
+*.waveDataset-meta.xml
+*.waveLens-meta.xml
+*.waveRecipe-meta.xml
+*.waveTemplateBundle-meta.xml
+*.waveXmd-meta.xml 

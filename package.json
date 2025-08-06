@@ -1,12 +1,11 @@
 {
   "name": "ppt-generator-api",
   "version": "1.0.0",
-  "description": "API service for generating PowerPoint presentations from structured content",
+  "description": "PPT Generator API for Salesforce Agentforce",
   "main": "api-server.js",
   "scripts": {
     "start": "node api-server.js",
-    "dev": "nodemon api-server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon api-server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -15,31 +14,10 @@
     "pptxgenjs": "^3.12.0",
     "dotenv": "^16.3.1"
   },
-  "optionalDependencies": {
-    "pptx-automizer": "^0.7.3",
-    "aws-sdk": "^2.1490.0",
-    "cloudinary": "^1.41.0",
-    "firebase-admin": "^11.11.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
-  "keywords": [
-    "powerpoint",
-    "pptx",
-    "api",
-    "content-generator",
-    "automation",
-    "presentation",
-    "cloud-storage"
-  ],
-  "author": "PPT Generator API",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "your-repository-url"
-  }
+  "keywords": ["ppt", "presentation", "api", "salesforce"],
+  "author": "Your Name",
+  "license": "MIT"
 } 
