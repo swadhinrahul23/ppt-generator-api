@@ -39,37 +39,171 @@ if (!fs.existsSync(config.storage.local.uploadDir)) {
     fs.mkdirSync(config.storage.local.uploadDir, { recursive: true });
 }
 
-// Helper functions
-function processContentByTopic(content) {
-    const sections = content.split('\n\n').filter(section => section.trim().length > 0);
-    const slides = [];
-    
-    sections.forEach((section, index) => {
-        const lines = section.split('\n');
-        const title = lines[0].trim();
-        const content = lines.slice(1).join('\n').trim();
-        
-        if (content) {
-            slides.push({ title, content });
-        }
-    });
-    
-    return slides.length > 0 ? slides : [{ title: 'Content', content }];
-}
+// Content Categorizer (same as api-server.js)
+class ContentCategorizer {
+    static categorizeByParagraphs(content) {
+        const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+        return paragraphs.map((paragraph, index) => ({
+            type: 'paragraph',
+            title: this.generateTitleFromContent(paragraph),
+            content: paragraph.trim(),
+            index: index + 1
+        }));
+    }
 
-function processContentByParagraph(content) {
-    const paragraphs = content.split('\n\n').filter(p => p.trim().length > 0);
-    const slides = [];
-    
-    paragraphs.forEach((paragraph, index) => {
-        const lines = paragraph.split('\n');
-        const title = lines[0].trim();
-        const content = lines.slice(1).join('\n').trim();
+    static categorizeByTopics(content) {
+        const topics = [];
+        const lines = content.split('\n').filter(line => line.trim().length > 0);
+        let currentTopic = null;
+        let currentContent = [];
+
+        for (const line of lines) {
+            if (this.isLikelyHeading(line)) {
+                if (currentTopic && currentContent.length > 0) {
+                    topics.push({
+                        type: 'topic',
+                        title: currentTopic,
+                        content: currentContent.join('\n'),
+                        index: topics.length + 1
+                    });
+                }
+                currentTopic = line.trim();
+                currentContent = [];
+            } else {
+                currentContent.push(line);
+            }
+        }
+
+        if (currentTopic && currentContent.length > 0) {
+            topics.push({
+                type: 'topic',
+                title: currentTopic,
+                content: currentContent.join('\n'),
+                index: topics.length + 1
+            });
+        }
+
+        return topics.length > 0 ? topics : this.categorizeByParagraphs(content);
+    }
+
+    static categorizeByLength(content) {
+        const words = content.split(/\s+/);
+        const wordsPerSlide = Math.max(50, Math.floor(words.length / 8));
+        const categories = [];
         
-        slides.push({ title, content: content || title });
-    });
-    
-    return slides;
+        for (let i = 0; i < words.length; i += wordsPerSlide) {
+            const slideWords = words.slice(i, i + wordsPerSlide);
+            const slideContent = slideWords.join(' ');
+            
+            categories.push({
+                type: 'length',
+                title: this.generateTitleFromContent(slideContent),
+                content: slideContent,
+                index: categories.length + 1
+            });
+        }
+
+        return categories;
+    }
+
+    static categorizeByKeywords(content) {
+        const keywords = this.extractKeywords(content);
+        const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
+        const categories = [];
+
+        for (const keyword of keywords.slice(0, 6)) {
+            const relatedSentences = sentences.filter(sentence => 
+                sentence.toLowerCase().includes(keyword.toLowerCase())
+            );
+
+            if (relatedSentences.length > 0) {
+                categories.push({
+                    type: 'keyword',
+                    title: `About ${keyword}`,
+                    content: relatedSentences.join('. ') + '.',
+                    index: categories.length + 1,
+                    keyword
+                });
+            }
+        }
+
+        return categories.length > 0 ? categories : this.categorizeByParagraphs(content);
+    }
+
+    static isLikelyHeading(line) {
+        const trimmed = line.trim();
+        return (
+            trimmed.length < 100 &&
+            (trimmed.endsWith(':') ||
+             /^[A-Z][^.!?]*$/.test(trimmed) ||
+             /^\d+\./.test(trimmed) ||
+             trimmed === trimmed.toUpperCase())
+        );
+    }
+
+    static extractKeywords(content) {
+        const words = content.toLowerCase()
+            .replace(/[^\w\s]/g, ' ')
+            .split(/\s+/)
+            .filter(word => word.length > 3);
+
+        const stopWords = new Set([
+            'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'its', 'may', 'new', 'now', 'old', 'see', 'two', 'who', 'boy', 'did', 'does', 'let', 'man', 'men', 'put', 'say', 'she', 'too', 'use', 'with', 'have', 'this', 'will', 'your', 'from', 'they', 'know', 'want', 'been', 'good', 'much', 'some', 'time', 'very', 'when', 'come', 'here', 'just', 'like', 'long', 'make', 'many', 'over', 'such', 'take', 'than', 'them', 'well', 'were'
+        ]);
+
+        const wordCount = {};
+        words.forEach(word => {
+            if (!stopWords.has(word)) {
+                wordCount[word] = (wordCount[word] || 0) + 1;
+            }
+        });
+
+        return Object.entries(wordCount)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 10)
+            .map(([word]) => word);
+    }
+
+    static generateTitleFromContent(content) {
+        const sentences = content.split(/[.!?]+/);
+        const firstSentence = sentences[0].trim();
+        
+        if (firstSentence.length < 60) {
+            return firstSentence;
+        }
+
+        const words = firstSentence.split(' ');
+        return words.slice(0, 8).join(' ') + '...';
+    }
+
+    static categorizeContent(content, method) {
+        let categories = [];
+        
+        switch (method) {
+            case 'paragraph':
+                categories = this.categorizeByParagraphs(content);
+                break;
+            case 'topic':
+                categories = this.categorizeByTopics(content);
+                break;
+            case 'length':
+                categories = this.categorizeByLength(content);
+                break;
+            case 'keywords':
+                categories = this.categorizeByKeywords(content);
+                break;
+            default:
+                categories = this.categorizeByParagraphs(content);
+        }
+
+        return {
+            method,
+            totalWords: content.split(/\s+/).length,
+            totalParagraphs: content.split(/\n\s*\n/).length,
+            categories,
+            estimatedSlides: categories.length + 1
+        };
+    }
 }
 
 // Main handler function
@@ -120,62 +254,61 @@ module.exports = async (req, res) => {
 
             console.log(`📝 Generating PPT for: ${title}`);
 
-            // Generate PPT
+            // Generate PPT using ContentCategorizer (same as api-server.js)
             const pptx = new PptxGenJS();
             
             // Set theme
             pptx.layout = 'LAYOUT_16x9';
             pptx.theme = { color: 'F1F1F1', back: 'FFFFFF' };
 
-            // Process content based on method
-            let slides = [];
-            if (contentMethod === 'topic') {
-                slides = processContentByTopic(content);
-            } else if (contentMethod === 'paragraph') {
-                slides = processContentByParagraph(content);
-            } else {
-                slides = processContentByTopic(content);
-            }
+            // Get theme colors
+            const getThemeColors = (theme) => {
+                const themes = {
+                    modern: { primary: '2563EB', secondary: '667eea', text: '374151' },
+                    classic: { primary: '7C2D12', secondary: '4B5563', text: '374151' },
+                    minimal: { primary: '000000', secondary: '666666', text: '555555' },
+                    creative: { primary: '7C3AED', secondary: 'DC2626', text: '1F2937' }
+                };
+                return themes[theme] || themes.modern;
+            };
 
-            // Add slides
-            slides.forEach((slideContent, index) => {
+            const themeColors = getThemeColors(theme);
+
+            // Process content using ContentCategorizer
+            const analysis = ContentCategorizer.categorizeContent(content, contentMethod);
+
+            // Title slide
+            const titleSlide = pptx.addSlide();
+            titleSlide.addText(title, {
+                x: 0.5, y: 2.5, w: 9, h: 1.5,
+                fontSize: 36, bold: true, color: themeColors.primary, align: 'center'
+            });
+            
+            titleSlide.addText('Generated Content Presentation', {
+                x: 0.5, y: 4, w: 9, h: 0.8,
+                fontSize: 18, color: themeColors.secondary, align: 'center'
+            });
+
+            // Content slides
+            for (const category of analysis.categories) {
                 const slide = pptx.addSlide();
                 
-                if (index === 0) {
-                    // Title slide
-                    slide.addText(title, {
-                        x: 1, y: 2, w: 8, h: 1.5,
-                        fontSize: 32,
-                        bold: true,
-                        color: '2E86AB',
-                        align: 'center'
-                    });
+                slide.addText(category.title, {
+                    x: 0.5, y: 0.5, w: 9, h: 1,
+                    fontSize: 24, bold: true, color: themeColors.primary
+                });
+                
+                const bullets = category.content
+                    .split(/[.!?]+/)
+                    .filter(s => s.trim().length > 0)
+                    .slice(0, 5)
+                    .map(sentence => sentence.trim());
                     
-                    if (slideContent.content) {
-                        slide.addText(slideContent.content, {
-                            x: 1, y: 3.5, w: 8, h: 2,
-                            fontSize: 16,
-                            color: '666666',
-                            align: 'center'
-                        });
-                    }
-                } else {
-                    // Content slide
-                    slide.addText(slideContent.title, {
-                        x: 0.5, y: 0.5, w: 9, h: 0.8,
-                        fontSize: 24,
-                        bold: true,
-                        color: '2E86AB'
-                    });
-                    
-                    slide.addText(slideContent.content, {
-                        x: 0.5, y: 1.5, w: 9, h: 5,
-                        fontSize: 14,
-                        color: '333333',
-                        bullet: { type: 'number' }
-                    });
-                }
-            });
+                slide.addText(bullets.join('\n'), {
+                    x: 0.5, y: 1.8, w: 9, h: 4.5,
+                    fontSize: 16, color: themeColors.text, bullet: true, lineSpacing: 24
+                });
+            }
 
             // Generate file
             const fileName = `${title.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.pptx`;
@@ -201,7 +334,7 @@ module.exports = async (req, res) => {
                         data: {
                             fileId: uploadResult.fileId,
                             downloadUrl: uploadResult.downloadUrl,
-                            slides: slides.length,
+                            slides: analysis.estimatedSlides,
                             fileName: uploadResult.fileName,
                             fileSize: uploadResult.fileSize
                         }
@@ -222,7 +355,7 @@ module.exports = async (req, res) => {
                     data: {
                         fileId: fileName,
                         fileData: fileBuffer.toString('base64'),
-                        slides: slides.length,
+                        slides: analysis.estimatedSlides,
                         fileName,
                         fileSize: fileBuffer.length
                     }
