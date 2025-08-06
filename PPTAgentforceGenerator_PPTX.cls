@@ -75,7 +75,7 @@ public class PPTAgentforceGenerator_PPTX {
                 if (String.isBlank(request.content)) {
                     result.success = false;
                     result.message = 'Content is required and cannot be empty.';
-                    result.downloadLink = null;
+                    result.downloadUrl = null;
                     result.debugInfo = 'Validation failed: Empty content';
                     results.add(result);
                     continue;
@@ -84,7 +84,7 @@ public class PPTAgentforceGenerator_PPTX {
                 if (request.content.length() < MIN_CONTENT_LENGTH) {
                     result.success = false;
                     result.message = 'Content is too short. Please provide at least ' + MIN_CONTENT_LENGTH + ' characters.';
-                    result.downloadLink = null;
+                    result.downloadUrl = null;
                     result.debugInfo = 'Validation failed: Content length ' + request.content.length() + ' < ' + MIN_CONTENT_LENGTH;
                     results.add(result);
                     continue;
@@ -93,7 +93,7 @@ public class PPTAgentforceGenerator_PPTX {
                 if (request.content.length() > MAX_CONTENT_LENGTH) {
                     result.success = false;
                     result.message = 'Content is too long. Maximum allowed is ' + MAX_CONTENT_LENGTH + ' characters.';
-                    result.downloadLink = null;
+                    result.downloadUrl = null;
                     result.debugInfo = 'Validation failed: Content length ' + request.content.length() + ' > ' + MAX_CONTENT_LENGTH;
                     results.add(result);
                     continue;
@@ -112,7 +112,7 @@ public class PPTAgentforceGenerator_PPTX {
             } catch (Exception e) {
                 result.success = false;
                 result.message = 'Unexpected error: ' + e.getMessage();
-                result.downloadLink = null;
+                result.downloadUrl = null;
                 result.debugInfo = 'Exception: ' + e.getTypeName() + ' - ' + e.getStackTraceString();
             }
             
@@ -176,7 +176,7 @@ public class PPTAgentforceGenerator_PPTX {
                     result.success = false;
                     result.message = 'API returned error: ' + responseData.get('error');
                     result.downloadUrl = null;
-                    result.debugInfo = 'API returned success=false';
+                    result.debugInfo = 'API returned success=false - ' + responseData.get('message');
                 }
             } else {
                 result.success = false;
@@ -234,27 +234,27 @@ public class PPTAgentforceGenerator_PPTX {
         try {
             System.debug('=== REMOTE SITE SETTINGS TEST ===');
             
-            // Test basic HTTP callout
+            // Test basic HTTP callout to Vercel API
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint('http://localhost:3001/api/health');
+            request.setEndpoint(EXTERNAL_API_URL + '/api/health');
             request.setMethod('GET');
-            request.setTimeout(5000);
+            request.setTimeout(10000);
             
-            System.debug('Testing basic HTTP callout...');
+            System.debug('Testing Vercel API callout...');
             HttpResponse response = http.send(request);
             
             System.debug('Response Status: ' + response.getStatusCode());
             System.debug('Response Body: ' + response.getBody());
             
             if (response.getStatusCode() == 200) {
-                System.debug('✅ Remote site settings are working correctly');
+                System.debug('✅ Vercel API connection successful');
             } else {
-                System.debug('❌ Remote site settings issue - Status: ' + response.getStatusCode());
+                System.debug('❌ Vercel API connection failed - Status: ' + response.getStatusCode());
             }
             
         } catch (Exception e) {
-            System.debug('❌ Remote site settings error: ' + e.getMessage());
+            System.debug('❌ Vercel API connection error: ' + e.getMessage());
             System.debug('Error type: ' + e.getTypeName());
         }
     }
