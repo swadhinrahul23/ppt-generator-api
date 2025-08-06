@@ -5,7 +5,7 @@
 public class PPTAgentforceGenerator_PPTX {
     
     // Configuration - Update this URL to your hosted API
-    private static final String EXTERNAL_API_URL = 'https://pptxx-generator-api.vercel.app'; // VERCEL API SERVER
+    private static final String EXTERNAL_API_URL = 'https://pptxx-generator-api-qeac.vercel.app'; // VERCEL API SERVER
     private static final Integer API_TIMEOUT = 60000;
     private static final Integer MAX_CONTENT_LENGTH = 50000;
     private static final Integer MIN_CONTENT_LENGTH = 50;
