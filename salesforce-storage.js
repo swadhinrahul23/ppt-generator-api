@@ -1,71 +1,66 @@
-/**
- * Salesforce Storage Service for PPT Generator API
- * Handles file uploads, downloads, and sharing via Salesforce Files
- */
-
+// Salesforce Storage Service for PPT Generator API
 const axios = require('axios');
 
 class SalesforceStorageService {
-    constructor(config) {
-        this.config = config;
+    constructor() {
         this.accessToken = null;
         this.instanceUrl = null;
+        this.clientId = process.env.SALESFORCE_CLIENT_ID;
+        this.clientSecret = process.env.SALESFORCE_CLIENT_SECRET;
+        this.username = process.env.SALESFORCE_USERNAME;
+        this.password = process.env.SALESFORCE_PASSWORD;
+        this.securityToken = process.env.SALESFORCE_SECURITY_TOKEN;
+        this.loginUrl = process.env.SALESFORCE_LOGIN_URL || 'https://login.salesforce.com';
     }
 
-    /**
-     * Authenticate with Salesforce using OAuth 2.0 Client Credentials flow
-     */
     async authenticate() {
         try {
-            const authUrl = `${this.config.loginUrl}/services/oauth2/token`;
-            const params = new URLSearchParams({
-                grant_type: 'client_credentials',
-                client_id: this.config.clientId,
-                client_secret: this.config.clientSecret
+            console.log('🔐 Authenticating with Salesforce...');
+            
+            const authData = new URLSearchParams({
+                grant_type: 'password',
+                client_id: this.clientId,
+                client_secret: this.clientSecret,
+                username: this.username,
+                password: this.password + this.securityToken
             });
 
-            const response = await axios.post(authUrl, params, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            const response = await axios.post(`${this.loginUrl}/services/oauth2/token`, authData, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
 
             this.accessToken = response.data.access_token;
             this.instanceUrl = response.data.instance_url;
-
+            
             console.log('✅ Salesforce authentication successful');
             return true;
         } catch (error) {
-            console.error('❌ Salesforce authentication failed:', error.message);
-            throw new Error('Salesforce authentication failed: ' + error.message);
+            console.error('❌ Salesforce authentication failed:', error.response?.data || error.message);
+            throw new Error('Salesforce authentication failed: ' + (error.response?.data?.error_description || error.message));
         }
     }
 
-    /**
-     * Upload file to Salesforce Files
-     */
-    async uploadFile(filePath, filename) {
+    async uploadFile(fileBuffer, fileName, title) {
         try {
-            // Ensure we're authenticated
             if (!this.accessToken) {
                 await this.authenticate();
             }
 
-            // Read file content
-            const fs = require('fs');
-            const fileContent = fs.readFileSync(filePath);
-            const base64Content = fileContent.toString('base64');
+            console.log(`📤 Uploading file to Salesforce: ${fileName}`);
 
             // Create ContentVersion record
             const contentVersionData = {
-                Title: filename,
-                PathOnClient: filename,
-                VersionData: base64Content,
-                ContentLocation: 'S' // Stored in Salesforce
+                Title: title || fileName,
+                PathOnClient: fileName,
+                VersionData: fileBuffer.toString('base64'),
+                ContentLocation: 'S',
+                IsMajorVersion: true
             };
 
             const response = await axios.post(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentVersion`,
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion`,
                 contentVersionData,
                 {
                     headers: {
@@ -76,10 +71,11 @@ class SalesforceStorageService {
             );
 
             const contentVersionId = response.data.id;
+            console.log(`✅ File uploaded to Salesforce. ContentVersion ID: ${contentVersionId}`);
 
-            // Get the ContentDocument ID
-            const cvResponse = await axios.get(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentVersion/${contentVersionId}`,
+            // Get ContentDocument ID
+            const contentDocResponse = await axios.get(
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion/${contentVersionId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -87,19 +83,25 @@ class SalesforceStorageService {
                 }
             );
 
-            const contentDocumentId = cvResponse.data.ContentDocumentId;
+            const contentDocumentId = contentDocResponse.data.ContentDocumentId;
 
             // Create ContentDistribution for public sharing
             const distributionData = {
-                ContentVersionId: contentVersionId,
-                Name: filename,
+                ContentDocumentId: contentDocumentId,
+                Name: title || fileName,
                 PreferencesAllowOriginalDownload: true,
-                PreferencesAllowPDFDownload: true,
-                PreferencesAllowViewInBrowser: true
+                PreferencesAllowPDFDownload: false,
+                PreferencesAllowViewInBrowser: true,
+                PreferencesExpires: false,
+                PreferencesLinkLatestVersion: true,
+                PreferencesNotifyOnVisit: false,
+                PreferencesPasswordRequired: false,
+                PreferencesRedirectURL: null,
+                PreferencesSendPDFViaEmail: false
             };
 
-            const distResponse = await axios.post(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentDistribution`,
+            const distributionResponse = await axios.post(
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDistribution`,
                 distributionData,
                 {
                     headers: {
@@ -109,11 +111,11 @@ class SalesforceStorageService {
                 }
             );
 
-            const distributionId = distResponse.data.id;
+            const distributionId = distributionResponse.data.id;
 
-            // Get the public URL
+            // Get the public download URL
             const publicUrlResponse = await axios.get(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentDistribution/${distributionId}`,
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDistribution/${distributionId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -121,26 +123,25 @@ class SalesforceStorageService {
                 }
             );
 
-            const publicUrl = publicUrlResponse.data.DistributionPublicUrl;
+            const downloadUrl = publicUrlResponse.data.DistributionPublicUrl;
+
+            console.log(`✅ Public download URL created: ${downloadUrl}`);
 
             return {
-                success: true,
-                shareableLink: publicUrl,
-                fileId: contentDocumentId,
-                contentVersionId: contentVersionId,
-                distributionId: distributionId,
-                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
+                fileId: contentVersionId,
+                downloadUrl: downloadUrl,
+                fileName: fileName,
+                fileSize: fileBuffer.length,
+                contentDocumentId: contentDocumentId,
+                distributionId: distributionId
             };
 
         } catch (error) {
-            console.error('❌ Salesforce file upload failed:', error.message);
-            throw new Error('Salesforce file upload failed: ' + error.message);
+            console.error('❌ Salesforce upload failed:', error.response?.data || error.message);
+            throw new Error('Salesforce upload failed: ' + (error.response?.data?.message || error.message));
         }
     }
 
-    /**
-     * Get file information
-     */
     async getFileInfo(fileId) {
         try {
             if (!this.accessToken) {
@@ -148,7 +149,7 @@ class SalesforceStorageService {
             }
 
             const response = await axios.get(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentDocument/${fileId}`,
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion/${fileId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -159,66 +160,34 @@ class SalesforceStorageService {
             return {
                 fileId: response.data.Id,
                 title: response.data.Title,
-                size: response.data.ContentSize,
+                fileName: response.data.PathOnClient,
+                fileSize: response.data.ContentSize,
                 createdDate: response.data.CreatedDate,
-                fileType: response.data.FileType
+                fileType: 'POWER_POINT_X'
             };
 
         } catch (error) {
-            console.error('❌ Salesforce file info retrieval failed:', error.message);
-            throw new Error('Salesforce file info retrieval failed: ' + error.message);
+            console.error('❌ Salesforce get file info failed:', error.response?.data || error.message);
+            throw new Error('Salesforce get file info failed: ' + (error.response?.data?.message || error.message));
         }
     }
 
-    /**
-     * Download file from Salesforce
-     */
-    async downloadFile(fileId) {
-        try {
-            if (!this.accessToken) {
-            await this.authenticate();
-            }
-
-            // Get the latest ContentVersion
-            const response = await axios.get(
-                `${this.instanceUrl}/services/data/${this.config.version}/query?q=SELECT+Id,VersionData+FROM+ContentVersion+WHERE+ContentDocumentId='${fileId}'+ORDER+BY+CreatedDate+DESC+LIMIT+1`,
-                {
-                headers: {
-                    'Authorization': `Bearer ${this.accessToken}`
-                    }
-                }
-            );
-
-            if (response.data.records.length === 0) {
-                throw new Error('File not found');
-            }
-
-            const versionData = response.data.records[0].VersionData;
-            const buffer = Buffer.from(versionData, 'base64');
-
-            return {
-                success: true,
-                data: buffer,
-                filename: response.data.records[0].Title || 'download'
-            };
-
-        } catch (error) {
-            console.error('❌ Salesforce file download failed:', error.message);
-            throw new Error('Salesforce file download failed: ' + error.message);
-        }
-    }
-
-    /**
-     * List recent files
-     */
-    async listRecentFiles(limit = 10) {
+    async listFiles(limit = 10) {
         try {
             if (!this.accessToken) {
                 await this.authenticate();
             }
 
+            const query = `
+                SELECT Id, Title, PathOnClient, ContentSize, CreatedDate, ContentDocumentId 
+                FROM ContentVersion 
+                WHERE PathOnClient LIKE '%.pptx' 
+                ORDER BY CreatedDate DESC 
+                LIMIT ${limit}
+            `;
+
             const response = await axios.get(
-                `${this.instanceUrl}/services/data/${this.config.version}/query?q=SELECT+Id,Title,ContentSize,CreatedDate,FileType+FROM+ContentDocument+ORDER+BY+CreatedDate+DESC+LIMIT+${limit}`,
+                `${this.instanceUrl}/services/data/v58.0/query?q=${encodeURIComponent(query)}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -229,28 +198,30 @@ class SalesforceStorageService {
             return response.data.records.map(record => ({
                 fileId: record.Id,
                 title: record.Title,
-                size: record.ContentSize,
+                fileName: record.PathOnClient,
+                fileSize: record.ContentSize,
                 createdDate: record.CreatedDate,
-                fileType: record.FileType
+                fileType: 'POWER_POINT_X'
             }));
 
         } catch (error) {
-            console.error('❌ Salesforce file listing failed:', error.message);
-            throw new Error('Salesforce file listing failed: ' + error.message);
+            console.error('❌ Salesforce list files failed:', error.response?.data || error.message);
+            throw new Error('Salesforce list files failed: ' + (error.response?.data?.message || error.message));
         }
     }
 
-    /**
-     * Delete file from Salesforce
-     */
     async deleteFile(fileId) {
         try {
             if (!this.accessToken) {
                 await this.authenticate();
             }
 
+            // First get the ContentDocumentId
+            const fileInfo = await this.getFileInfo(fileId);
+            
+            // Delete the ContentDocument (this will delete all versions)
             await axios.delete(
-                `${this.instanceUrl}/services/data/${this.config.version}/sobjects/ContentDocument/${fileId}`,
+                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDocument/${fileInfo.contentDocumentId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -258,14 +229,12 @@ class SalesforceStorageService {
                 }
             );
 
-            return {
-                success: true,
-                message: 'File deleted successfully'
-            };
+            console.log(`✅ File deleted from Salesforce: ${fileId}`);
+            return true;
 
         } catch (error) {
-            console.error('❌ Salesforce file deletion failed:', error.message);
-            throw new Error('Salesforce file deletion failed: ' + error.message);
+            console.error('❌ Salesforce delete file failed:', error.response?.data || error.message);
+            throw new Error('Salesforce delete file failed: ' + (error.response?.data?.message || error.message));
         }
     }
 }

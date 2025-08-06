@@ -31,8 +31,8 @@ public class PPTAgentforceGenerator_PPTX {
      * Output wrapper class for Agentforce Agent Actions
      */
     public class AgentPPTResult {
-        @InvocableVariable(label='Download Link' description='Download link for the PPTX file')
-        public String downloadLink;
+        @InvocableVariable(label='Download URL' description='Download link for the PPTX file')
+        public String downloadUrl;
         
         @InvocableVariable(label='Success' description='Whether generation was successful')
         public Boolean success;
@@ -42,6 +42,12 @@ public class PPTAgentforceGenerator_PPTX {
         
         @InvocableVariable(label='File ID' description='File ID for tracking')
         public String fileId;
+        
+        @InvocableVariable(label='File Name' description='Generated file name')
+        public String fileName;
+        
+        @InvocableVariable(label='File Size' description='Size of the generated file in bytes')
+        public Integer fileSize;
         
         @InvocableVariable(label='Slides Count' description='Number of slides generated')
         public Integer slidesCount;
@@ -159,28 +165,30 @@ public class PPTAgentforceGenerator_PPTX {
                     Map<String, Object> data = (Map<String, Object>) responseData.get('data');
                     
                     result.success = true;
-                    result.downloadLink = (String) data.get('downloadUrl');
+                    result.downloadUrl = (String) data.get('downloadUrl');
                     result.fileId = (String) data.get('fileId');
+                    result.fileName = (String) data.get('fileName');
+                    result.fileSize = (Integer) data.get('fileSize');
                     result.slidesCount = (Integer) data.get('slides');
                     result.message = 'PowerPoint presentation generated successfully! Click the link to download.';
-                    result.debugInfo = 'API call successful - File ID: ' + result.fileId;
+                    result.debugInfo = 'API call successful - File ID: ' + result.fileId + ', Size: ' + result.fileSize + ' bytes';
                 } else {
                     result.success = false;
                     result.message = 'API returned error: ' + responseData.get('error');
-                    result.downloadLink = null;
+                    result.downloadUrl = null;
                     result.debugInfo = 'API returned success=false';
                 }
             } else {
                 result.success = false;
                 result.message = 'API request failed with status: ' + httpResponse.getStatusCode() + ' - ' + httpResponse.getStatus();
-                result.downloadLink = null;
+                result.downloadUrl = null;
                 result.debugInfo = 'HTTP Status: ' + httpResponse.getStatusCode() + ', Body: ' + httpResponse.getBody();
             }
             
         } catch (Exception e) {
             result.success = false;
             result.message = 'API connection failed: ' + e.getMessage();
-            result.downloadLink = null;
+            result.downloadUrl = null;
             result.debugInfo = 'Exception: ' + e.getTypeName() + ' - ' + e.getStackTraceString();
         }
         

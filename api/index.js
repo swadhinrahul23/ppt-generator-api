@@ -2,11 +2,12 @@
 const PptxGenJS = require('pptxgenjs');
 const path = require('path');
 const fs = require('fs');
+const SalesforceStorageService = require('../salesforce-storage');
 
 // Configuration
 const config = {
     storage: {
-        type: process.env.STORAGE_TYPE || 'local',
+        type: process.env.STORAGE_TYPE || 'salesforce',
         local: {
             uploadDir: '/tmp/uploads',
             retentionDays: 7
@@ -18,7 +19,13 @@ const config = {
     }
 };
 
-// Ensure upload directory exists
+// Initialize storage service
+let storageService = null;
+if (config.storage.type === 'salesforce') {
+    storageService = new SalesforceStorageService();
+}
+
+// Ensure upload directory exists (for local temp storage)
 if (!fs.existsSync(config.storage.local.uploadDir)) {
     fs.mkdirSync(config.storage.local.uploadDir, { recursive: true });
 }
@@ -167,91 +174,171 @@ module.exports = async (req, res) => {
             
             await pptx.writeFile({ fileName: filePath });
 
-            // For Vercel, we'll return the file data directly
+            // Read the generated file
             const fileBuffer = fs.readFileSync(filePath);
             
             // Clean up the temporary file
             fs.unlinkSync(filePath);
 
-            return res.status(200).json({
-                success: true,
-                message: 'Presentation generated successfully',
-                data: {
-                    fileId: fileName,
-                    downloadUrl: `/api/file/${fileName}`,
-                    slides: slides.length,
-                    fileName,
-                    fileSize: fileBuffer.length
+            // Store in Salesforce if configured
+            if (config.storage.type === 'salesforce' && storageService) {
+                try {
+                    console.log('📤 Uploading to Salesforce...');
+                    const uploadResult = await storageService.uploadFile(fileBuffer, fileName, title);
+                    
+                    return res.status(200).json({
+                        success: true,
+                        message: 'Presentation generated and uploaded to Salesforce successfully!',
+                        data: {
+                            fileId: uploadResult.fileId,
+                            downloadUrl: uploadResult.downloadUrl,
+                            slides: slides.length,
+                            fileName: uploadResult.fileName,
+                            fileSize: uploadResult.fileSize
+                        }
+                    });
+                } catch (error) {
+                    console.error('❌ Salesforce upload failed:', error.message);
+                    return res.status(500).json({
+                        success: false,
+                        error: 'Failed to upload to Salesforce',
+                        message: error.message
+                    });
                 }
-            });
+            } else {
+                // Fallback to local storage (for development)
+                return res.status(200).json({
+                    success: true,
+                    message: 'Presentation generated successfully (local storage)',
+                    data: {
+                        fileId: fileName,
+                        fileData: fileBuffer.toString('base64'),
+                        slides: slides.length,
+                        fileName,
+                        fileSize: fileBuffer.length
+                    }
+                });
+            }
         }
 
         // Get file info endpoint
         if (method === 'GET' && url.startsWith('/api/file/')) {
             const fileId = url.split('/api/file/')[1];
-            const filePath = path.join(config.storage.local.uploadDir, fileId);
             
-            if (fs.existsSync(filePath)) {
-                const stats = fs.statSync(filePath);
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        fileId,
-                        title: fileId,
-                        size: stats.size,
-                        createdAt: stats.birthtime.toISOString(),
-                        fileType: 'POWER_POINT_X'
-                    }
-                });
+            if (config.storage.type === 'salesforce' && storageService) {
+                try {
+                    const fileInfo = await storageService.getFileInfo(fileId);
+                    return res.status(200).json({
+                        success: true,
+                        data: fileInfo
+                    });
+                } catch (error) {
+                    return res.status(404).json({
+                        success: false,
+                        error: 'File not found in Salesforce',
+                        message: error.message
+                    });
+                }
             } else {
-                return res.status(404).json({
-                    success: false,
-                    error: 'File not found'
-                });
+                // Fallback to local storage
+                const filePath = path.join(config.storage.local.uploadDir, fileId);
+                if (fs.existsSync(filePath)) {
+                    const stats = fs.statSync(filePath);
+                    return res.status(200).json({
+                        success: true,
+                        data: {
+                            fileId,
+                            title: fileId,
+                            size: stats.size,
+                            createdAt: stats.birthtime.toISOString(),
+                            fileType: 'POWER_POINT_X'
+                        }
+                    });
+                } else {
+                    return res.status(404).json({
+                        success: false,
+                        error: 'File not found'
+                    });
+                }
             }
         }
 
         // List files endpoint
         if (method === 'GET' && url === '/api/files') {
             const limit = parseInt(req.query?.limit) || 10;
-            const files = fs.readdirSync(config.storage.local.uploadDir)
-                .filter(file => file.endsWith('.pptx'))
-                .map(file => {
-                    const filePath = path.join(config.storage.local.uploadDir, file);
-                    const stats = fs.statSync(filePath);
-                    return {
-                        fileId: file,
-                        title: file,
-                        size: stats.size,
-                        createdDate: stats.birthtime.toISOString(),
-                        fileType: 'POWER_POINT_X'
-                    };
-                })
-                .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate))
-                .slice(0, limit);
+            
+            if (config.storage.type === 'salesforce' && storageService) {
+                try {
+                    const files = await storageService.listFiles(limit);
+                    return res.status(200).json({
+                        success: true,
+                        data: files
+                    });
+                } catch (error) {
+                    return res.status(500).json({
+                        success: false,
+                        error: 'Failed to list files from Salesforce',
+                        message: error.message
+                    });
+                }
+            } else {
+                // Fallback to local storage
+                const files = fs.readdirSync(config.storage.local.uploadDir)
+                    .filter(file => file.endsWith('.pptx'))
+                    .map(file => {
+                        const filePath = path.join(config.storage.local.uploadDir, file);
+                        const stats = fs.statSync(filePath);
+                        return {
+                            fileId: file,
+                            title: file,
+                            size: stats.size,
+                            createdDate: stats.birthtime.toISOString(),
+                            fileType: 'POWER_POINT_X'
+                        };
+                    })
+                    .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate))
+                    .slice(0, limit);
 
-            return res.status(200).json({
-                success: true,
-                data: files
-            });
+                return res.status(200).json({
+                    success: true,
+                    data: files
+                });
+            }
         }
 
         // Delete file endpoint
         if (method === 'DELETE' && url.startsWith('/api/file/')) {
             const fileId = url.split('/api/file/')[1];
-            const filePath = path.join(config.storage.local.uploadDir, fileId);
             
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath);
-                return res.status(200).json({
-                    success: true,
-                    message: 'File deleted successfully'
-                });
+            if (config.storage.type === 'salesforce' && storageService) {
+                try {
+                    await storageService.deleteFile(fileId);
+                    return res.status(200).json({
+                        success: true,
+                        message: 'File deleted from Salesforce successfully'
+                    });
+                } catch (error) {
+                    return res.status(404).json({
+                        success: false,
+                        error: 'Failed to delete file from Salesforce',
+                        message: error.message
+                    });
+                }
             } else {
-                return res.status(404).json({
-                    success: false,
-                    error: 'File not found'
-                });
+                // Fallback to local storage
+                const filePath = path.join(config.storage.local.uploadDir, fileId);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                    return res.status(200).json({
+                        success: true,
+                        message: 'File deleted successfully'
+                    });
+                } else {
+                    return res.status(404).json({
+                        success: false,
+                        error: 'File not found'
+                    });
+                }
             }
         }
 

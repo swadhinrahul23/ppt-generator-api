@@ -9,7 +9,8 @@
     "build": "echo 'Build completed'"
   },
   "dependencies": {
-    "pptxgenjs": "^3.12.0"
+    "pptxgenjs": "^3.12.0",
+    "axios": "^1.6.0"
   },
   "engines": {
     "node": ">=16.0.0"
