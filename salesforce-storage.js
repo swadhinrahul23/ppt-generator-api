@@ -2,37 +2,58 @@
 const axios = require('axios');
 
 class SalesforceStorageService {
-    constructor() {
+    constructor(config = {}) {
         this.accessToken = null;
         this.instanceUrl = null;
-        this.clientId = process.env.SALESFORCE_CLIENT_ID;
-        this.clientSecret = process.env.SALESFORCE_CLIENT_SECRET;
-        this.username = process.env.SALESFORCE_USERNAME;
-        this.password = process.env.SALESFORCE_PASSWORD;
-        this.securityToken = process.env.SALESFORCE_SECURITY_TOKEN;
-        this.loginUrl = process.env.SALESFORCE_LOGIN_URL || 'https://login.salesforce.com';
+        this.clientId = config.clientId || process.env.SALESFORCE_CLIENT_ID;
+        this.clientSecret = config.clientSecret || process.env.SALESFORCE_CLIENT_SECRET;
+        this.username = config.username || process.env.SALESFORCE_USERNAME;
+        this.password = config.password || process.env.SALESFORCE_PASSWORD;
+        this.securityToken = config.securityToken || process.env.SALESFORCE_SECURITY_TOKEN;
+        this.loginUrl = config.loginUrl || process.env.SALESFORCE_LOGIN_URL || 'https://login.salesforce.com';
+        this.version = config.version || process.env.SALESFORCE_API_VERSION || 'v58.0';
     }
 
     async authenticate() {
         try {
             console.log('🔐 Authenticating with Salesforce...');
             
-            const authData = new URLSearchParams({
-                grant_type: 'password',
-                client_id: this.clientId,
-                client_secret: this.clientSecret,
-                username: this.username,
-                password: this.password + this.securityToken
-            });
+            // Check if we have username/password (password flow) or just client credentials
+            if (this.username && this.password) {
+                // Password flow
+                const authData = new URLSearchParams({
+                    grant_type: 'password',
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret,
+                    username: this.username,
+                    password: this.password + (this.securityToken || '')
+                });
 
-            const response = await axios.post(`${this.loginUrl}/services/oauth2/token`, authData, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
+                const response = await axios.post(`${this.loginUrl}/services/oauth2/token`, authData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
 
-            this.accessToken = response.data.access_token;
-            this.instanceUrl = response.data.instance_url;
+                this.accessToken = response.data.access_token;
+                this.instanceUrl = response.data.instance_url;
+            } else {
+                // Client Credentials flow
+                const authData = new URLSearchParams({
+                    grant_type: 'client_credentials',
+                    client_id: this.clientId,
+                    client_secret: this.clientSecret
+                });
+
+                const response = await axios.post(`${this.loginUrl}/services/oauth2/token`, authData, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                this.accessToken = response.data.access_token;
+                this.instanceUrl = response.data.instance_url;
+            }
             
             console.log('✅ Salesforce authentication successful');
             return true;
@@ -60,7 +81,7 @@ class SalesforceStorageService {
             };
 
             const response = await axios.post(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion`,
+                `${this.instanceUrl}/services/data/${this.version}/sobjects/ContentVersion`,
                 contentVersionData,
                 {
                     headers: {
@@ -75,7 +96,7 @@ class SalesforceStorageService {
 
             // Get ContentDocument ID
             const contentDocResponse = await axios.get(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion/${contentVersionId}`,
+                `${this.instanceUrl}/services/data/${this.version}/sobjects/ContentVersion/${contentVersionId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -85,55 +106,17 @@ class SalesforceStorageService {
 
             const contentDocumentId = contentDocResponse.data.ContentDocumentId;
 
-            // Create ContentDistribution for public sharing
-            const distributionData = {
-                ContentDocumentId: contentDocumentId,
-                Name: title || fileName,
-                PreferencesAllowOriginalDownload: true,
-                PreferencesAllowPDFDownload: false,
-                PreferencesAllowViewInBrowser: true,
-                PreferencesExpires: false,
-                PreferencesLinkLatestVersion: true,
-                PreferencesNotifyOnVisit: false,
-                PreferencesPasswordRequired: false,
-                PreferencesRedirectURL: null,
-                PreferencesSendPDFViaEmail: false
-            };
+            // For now, return a basic download URL (you can enhance this later)
+            const downloadUrl = `${this.instanceUrl}/sfc/servlet.shepherd/document/download/${contentDocumentId}`;
 
-            const distributionResponse = await axios.post(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDistribution`,
-                distributionData,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${this.accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-            const distributionId = distributionResponse.data.id;
-
-            // Get the public download URL
-            const publicUrlResponse = await axios.get(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDistribution/${distributionId}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${this.accessToken}`
-                    }
-                }
-            );
-
-            const downloadUrl = publicUrlResponse.data.DistributionPublicUrl;
-
-            console.log(`✅ Public download URL created: ${downloadUrl}`);
+            console.log(`✅ File uploaded successfully. ContentDocument ID: ${contentDocumentId}`);
 
             return {
                 fileId: contentVersionId,
                 downloadUrl: downloadUrl,
                 fileName: fileName,
                 fileSize: fileBuffer.length,
-                contentDocumentId: contentDocumentId,
-                distributionId: distributionId
+                contentDocumentId: contentDocumentId
             };
 
         } catch (error) {
@@ -149,7 +132,7 @@ class SalesforceStorageService {
             }
 
             const response = await axios.get(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentVersion/${fileId}`,
+                `${this.instanceUrl}/services/data/${this.version}/sobjects/ContentVersion/${fileId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -163,7 +146,8 @@ class SalesforceStorageService {
                 fileName: response.data.PathOnClient,
                 fileSize: response.data.ContentSize,
                 createdDate: response.data.CreatedDate,
-                fileType: 'POWER_POINT_X'
+                fileType: 'POWER_POINT_X',
+                contentDocumentId: response.data.ContentDocumentId
             };
 
         } catch (error) {
@@ -187,7 +171,7 @@ class SalesforceStorageService {
             `;
 
             const response = await axios.get(
-                `${this.instanceUrl}/services/data/v58.0/query?q=${encodeURIComponent(query)}`,
+                `${this.instanceUrl}/services/data/${this.version}/query?q=${encodeURIComponent(query)}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`
@@ -221,7 +205,7 @@ class SalesforceStorageService {
             
             // Delete the ContentDocument (this will delete all versions)
             await axios.delete(
-                `${this.instanceUrl}/services/data/v58.0/sobjects/ContentDocument/${fileInfo.contentDocumentId}`,
+                `${this.instanceUrl}/services/data/${this.version}/sobjects/ContentDocument/${fileInfo.contentDocumentId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`

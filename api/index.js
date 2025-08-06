@@ -1,4 +1,6 @@
 // Vercel Serverless Function for PPT Generator API
+require('dotenv').config();
+
 const PptxGenJS = require('pptxgenjs');
 const path = require('path');
 const fs = require('fs');
@@ -16,13 +18,20 @@ const config = {
     limits: {
         maxFileSize: '50mb',
         maxContentLength: 50000
+    },
+    // Salesforce Configuration (same as api-server.js)
+    salesforce: {
+        loginUrl: process.env.SALESFORCE_LOGIN_URL || 'https://login.salesforce.com',
+        clientId: process.env.SALESFORCE_CLIENT_ID,
+        clientSecret: process.env.SALESFORCE_CLIENT_SECRET,
+        version: process.env.SALESFORCE_API_VERSION || 'v58.0'
     }
 };
 
 // Initialize storage service
 let storageService = null;
 if (config.storage.type === 'salesforce') {
-    storageService = new SalesforceStorageService();
+    storageService = new SalesforceStorageService(config.salesforce);
 }
 
 // Ensure upload directory exists (for local temp storage)
